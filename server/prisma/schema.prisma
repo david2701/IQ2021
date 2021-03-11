@@ -24,10 +24,11 @@ model Team {
   createdAt DateTime @default(now())
   id        String   @id @default(cuid())
   league    String?
-  matches   Match[]  @relation(name: "local")
+  matches   Match?   @relation(name: "local", fields: [matchesId])
+  matchesId String?
   players   Player[]
   updatedAt DateTime @updatedAt
-  visitor   Match[]  @relation(name: "MatchVisitorTeamVisitor")
+  visitor   Match    @relation(name: "MatchVisitorTeamVisitor")
 }
 
 model Country {
@@ -54,9 +55,18 @@ model Match {
   createdAt DateTime  @default(now())
   date      DateTime?
   id        String    @id @default(cuid())
-  local     Team?     @relation(name: "local", fields: [localId])
-  localId   String?
+  local     Team      @relation(name: "local")
   updatedAt DateTime  @updatedAt
   visitor   Team?     @relation(name: "MatchVisitorTeamVisitor", fields: [visitorId])
   visitorId String?
+}
+
+model Goalkeeper {
+  createdAt          DateTime     @default(now())
+  goalkeeper         Goalkeeper?  @relation(name: "GoalkeeperOnGoalkeepers", fields: [goalkeeperId])
+  goalkeeperId       String?
+  goalkeepers        Goalkeeper[] @relation(name: "GoalkeeperOnGoalkeepers")
+  id                 String       @id @default(cuid())
+  positionGoalkeeper String?
+  updatedAt          DateTime     @updatedAt
 }

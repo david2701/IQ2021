@@ -36,7 +36,7 @@ class Match {
   @ValidateNested()
   @Type(() => TeamWhereUniqueInput)
   @IsOptional()
-  local?: TeamWhereUniqueInput | null;
+  local?: TeamWhereUniqueInput;
   @ApiProperty({
     required: true,
   })

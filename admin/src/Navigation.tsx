@@ -10,6 +10,7 @@ const Navigation = (): React.ReactElement => {
       <NavigationItem name="Countries" to="/countries" />
       <NavigationItem name="Players" to="/players" />
       <NavigationItem name="Matches" to="/matches" />
+      <NavigationItem name="Goalkeepers" to="/goalkeepers" />
     </>
   );
 };
