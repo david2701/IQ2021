@@ -73,7 +73,14 @@ export const User = (): React.ReactElement => {
 
   const initialValues = React.useMemo(
     () =>
-      pick(data, ["firstName", "lastName", "password", "roles", "username"]),
+      pick(data, [
+        "abonne",
+        "firstName",
+        "lastName",
+        "password",
+        "roles",
+        "username",
+      ]),
     [data]
   );
 
@@ -110,6 +117,9 @@ export const User = (): React.ReactElement => {
               </FormHeader>
             }
           >
+            <div>
+              <TextField label="Abonne" name="abonne" />
+            </div>
             <div>
               <TextField label="First Name" name="firstName" />
             </div>

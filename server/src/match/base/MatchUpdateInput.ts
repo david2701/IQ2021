@@ -25,7 +25,7 @@ class MatchUpdateInput {
   @Field(() => TeamWhereUniqueInput, {
     nullable: true,
   })
-  local?: TeamWhereUniqueInput | null;
+  local?: TeamWhereUniqueInput;
   @ApiProperty({
     required: false,
     type: TeamWhereUniqueInput,

@@ -1,4 +1,5 @@
 export type User = {
+  abonne: string | null;
   createdAt: Date;
   firstName: string | null;
   id: string;

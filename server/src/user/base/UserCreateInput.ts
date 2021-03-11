@@ -12,6 +12,16 @@ class UserCreateInput {
   @Field(() => String, {
     nullable: true,
   })
+  abonne?: string | null;
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
   firstName?: string | null;
   @ApiProperty({
     required: false,
