@@ -19,6 +19,10 @@ import { TeamIndex } from "./team/TeamIndex";
 import { CountryIndex } from "./country/CountryIndex";
 import { PlayerIndex } from "./player/PlayerIndex";
 import { MatchIndex } from "./match/MatchIndex";
+import { GoalkeeperIndex } from "./goalkeeper/GoalkeeperIndex";
+import { MyTeamIndex } from "./myTeam/MyTeamIndex";
+import { StadeIndex } from "./stade/StadeIndex";
+import { PlayerLegendaryIndex } from "./playerLegendary/PlayerLegendaryIndex";
 
 const App = (): React.ReactElement => {
   const history = useHistory();
@@ -92,6 +96,13 @@ const AppLayout = (): React.ReactElement => {
             <PrivateRoute path="/countries" component={CountryIndex} />
             <PrivateRoute path="/players" component={PlayerIndex} />
             <PrivateRoute path="/matches" component={MatchIndex} />
+            <PrivateRoute path="/goalkeepers" component={GoalkeeperIndex} />
+            <PrivateRoute path="/my-teams" component={MyTeamIndex} />
+            <PrivateRoute path="/stades" component={StadeIndex} />
+            <PrivateRoute
+              path="/player-legendaries"
+              component={PlayerLegendaryIndex}
+            />
           </Switch>
         </Page>
       </MainLayout.Content>

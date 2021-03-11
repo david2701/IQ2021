@@ -13,6 +13,8 @@ import { DeleteCountryArgs } from "./DeleteCountryArgs";
 import { FindManyCountryArgs } from "./FindManyCountryArgs";
 import { FindOneCountryArgs } from "./FindOneCountryArgs";
 import { Country } from "./Country";
+import { FindManyStadeArgs } from "../../stade/base/FindManyStadeArgs";
+import { Stade } from "../../stade/base/Stade";
 import { FindManyTeamArgs } from "../../team/base/FindManyTeamArgs";
 import { Team } from "../../team/base/Team";
 import { CountryService } from "../country.service";
@@ -173,6 +175,30 @@ export class CountryResolverBase {
       }
       throw error;
     }
+  }
+
+  @graphql.ResolveField(() => [Stade])
+  @nestAccessControl.UseRoles({
+    resource: "Country",
+    action: "read",
+    possession: "any",
+  })
+  async stades(
+    @graphql.Parent() parent: Country,
+    @graphql.Args() args: FindManyStadeArgs,
+    @gqlUserRoles.UserRoles() userRoles: string[]
+  ): Promise<Stade[]> {
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "read",
+      possession: "any",
+      resource: "Stade",
+    });
+    const results = await this.service
+      .findOne({ where: { id: parent.id } })
+      // @ts-ignore
+      .stades(args);
+    return results.map((result) => permission.filter(result));
   }
 
   @graphql.ResolveField(() => [Team])

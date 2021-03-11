@@ -5,9 +5,9 @@ export const swaggerPath = "api";
 export const swaggerDocumentOptions = new DocumentBuilder()
   .setTitle("IQCollective")
   .setDescription(
-    'Backend IQCollective\n\n## Congratulations! Your application is ready.\n\nPlease note that all endpoints are secured with HTTP basic authentication.\nBy default, your app comes with one user with the username "admin" and password "admin".\nLearn more in [our docs](https://docs.amplication.com)'
+    'Backend IQCollective.\n\n## Congratulations! Your application is ready.\n\nPlease note that all endpoints are secured with HTTP basic authentication.\nBy default, your app comes with one user with the username "admin" and password "admin".\nLearn more in [our docs](https://docs.amplication.com)'
   )
-  .setVersion("e4d8raoc")
+  .setVersion("h1ayl9ki")
   .addBasicAuth()
   .build();
 
