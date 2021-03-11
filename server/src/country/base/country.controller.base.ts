@@ -12,6 +12,8 @@ import { CountryWhereInput } from "./CountryWhereInput";
 import { CountryWhereUniqueInput } from "./CountryWhereUniqueInput";
 import { CountryUpdateInput } from "./CountryUpdateInput";
 import { Country } from "./Country";
+import { StadeWhereInput } from "../../stade/base/StadeWhereInput";
+import { Stade } from "../../stade/base/Stade";
 import { TeamWhereInput } from "../../team/base/TeamWhereInput";
 import { Team } from "../../team/base/Team";
 
@@ -241,6 +243,169 @@ export class CountryControllerBase {
 
   @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
   @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.Get("/:id/stades")
+  @nestAccessControl.UseRoles({
+    resource: "Country",
+    action: "read",
+    possession: "any",
+  })
+  async findManyStades(
+    @common.Param() params: CountryWhereUniqueInput,
+    @common.Query() query: StadeWhereInput,
+    @nestAccessControl.UserRoles() userRoles: string[]
+  ): Promise<Stade[]> {
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "read",
+      possession: "any",
+      resource: "Stade",
+    });
+    const results = await this.service.findOne({ where: params }).stades({
+      where: query,
+      select: {
+        country: {
+          select: {
+            id: true,
+          },
+        },
+
+        createdAt: true,
+        id: true,
+        name: true,
+        updatedAt: true,
+      },
+    });
+    return results.map((result) => permission.filter(result));
+  }
+
+  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
+  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.Post("/:id/stades")
+  @nestAccessControl.UseRoles({
+    resource: "Country",
+    action: "update",
+    possession: "any",
+  })
+  async createStades(
+    @common.Param() params: CountryWhereUniqueInput,
+    @common.Body() body: CountryWhereUniqueInput[],
+    @nestAccessControl.UserRoles() userRoles: string[]
+  ): Promise<void> {
+    const data = {
+      stades: {
+        connect: body,
+      },
+    };
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "update",
+      possession: "any",
+      resource: "Country",
+    });
+    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
+    if (invalidAttributes.length) {
+      const roles = userRoles
+        .map((role: string) => JSON.stringify(role))
+        .join(",");
+      throw new common.ForbiddenException(
+        `Updating the relationship: ${
+          invalidAttributes[0]
+        } of ${"Country"} is forbidden for roles: ${roles}`
+      );
+    }
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
+  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.Patch("/:id/stades")
+  @nestAccessControl.UseRoles({
+    resource: "Country",
+    action: "update",
+    possession: "any",
+  })
+  async updateStades(
+    @common.Param() params: CountryWhereUniqueInput,
+    @common.Body() body: CountryWhereUniqueInput[],
+    @nestAccessControl.UserRoles() userRoles: string[]
+  ): Promise<void> {
+    const data = {
+      stades: {
+        set: body,
+      },
+    };
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "update",
+      possession: "any",
+      resource: "Country",
+    });
+    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
+    if (invalidAttributes.length) {
+      const roles = userRoles
+        .map((role: string) => JSON.stringify(role))
+        .join(",");
+      throw new common.ForbiddenException(
+        `Updating the relationship: ${
+          invalidAttributes[0]
+        } of ${"Country"} is forbidden for roles: ${roles}`
+      );
+    }
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
+  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.Delete("/:id/stades")
+  @nestAccessControl.UseRoles({
+    resource: "Country",
+    action: "update",
+    possession: "any",
+  })
+  async deleteStades(
+    @common.Param() params: CountryWhereUniqueInput,
+    @common.Body() body: CountryWhereUniqueInput[],
+    @nestAccessControl.UserRoles() userRoles: string[]
+  ): Promise<void> {
+    const data = {
+      stades: {
+        disconnect: body,
+      },
+    };
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "update",
+      possession: "any",
+      resource: "Country",
+    });
+    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
+    if (invalidAttributes.length) {
+      const roles = userRoles
+        .map((role: string) => JSON.stringify(role))
+        .join(",");
+      throw new common.ForbiddenException(
+        `Updating the relationship: ${
+          invalidAttributes[0]
+        } of ${"Country"} is forbidden for roles: ${roles}`
+      );
+    }
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
+  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
   @common.Get("/:id/teams")
   @nestAccessControl.UseRoles({
     resource: "Country",
@@ -270,7 +435,20 @@ export class CountryControllerBase {
         createdAt: true,
         id: true,
         league: true,
+
+        matches: {
+          select: {
+            id: true,
+          },
+        },
+
         updatedAt: true,
+
+        visitor: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
     return results.map((result) => permission.filter(result));
