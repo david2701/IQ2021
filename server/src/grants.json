@@ -1,0 +1,302 @@
+[
+  {
+    "role": "user",
+    "resource": "User",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "User",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "User",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "User",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "User",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "User",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "User",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "User",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "User",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "User",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Team",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "Team",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Team",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "Team",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Team",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "Team",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Team",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "Team",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Team",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "Team",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Country",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "Country",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Country",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "Country",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Country",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "Country",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Country",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "Country",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Country",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "Country",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Player",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "Player",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Player",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "Player",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Player",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "Player",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Player",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "Player",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Player",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "Player",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Match",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "Match",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Match",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "Match",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Match",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "Match",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Match",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "Match",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Match",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "administrator",
+    "resource": "Match",
+    "action": "read:any",
+    "attributes": "*"
+  }
+]
