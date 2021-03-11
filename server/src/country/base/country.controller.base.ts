@@ -270,7 +270,20 @@ export class CountryControllerBase {
         createdAt: true,
         id: true,
         league: true,
+
+        matches: {
+          select: {
+            id: true,
+          },
+        },
+
         updatedAt: true,
+
+        visitor: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
     return results.map((result) => permission.filter(result));

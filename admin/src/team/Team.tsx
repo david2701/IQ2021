@@ -18,6 +18,7 @@ import {
 import { api } from "../api";
 import useBreadcrumbs from "../components/breadcrumbs/use-breadcrumbs";
 import { CountrySelect } from "../country/CountrySelect";
+import { MatchSelect } from "../match/MatchSelect";
 import { Team as TTeam } from "../api/team/Team";
 import { TeamUpdateInput } from "../api/team/TeamUpdateInput";
 
@@ -71,9 +72,10 @@ export const Team = (): React.ReactElement => {
   const errorMessage =
     updateError?.response?.data?.message || error?.response?.data?.message;
 
-  const initialValues = React.useMemo(() => pick(data, ["country", "league"]), [
-    data,
-  ]);
+  const initialValues = React.useMemo(
+    () => pick(data, ["country", "league", "matches", "visitor"]),
+    [data]
+  );
 
   if (isLoading) {
     return <span>Loading...</span>;
@@ -111,6 +113,12 @@ export const Team = (): React.ReactElement => {
             </div>
             <div>
               <TextField label="League" name="league" />
+            </div>
+            <div>
+              <MatchSelect label="Matches" name="matches.id" />
+            </div>
+            <div>
+              <MatchSelect label="Visitor" name="visitor.id" />
             </div>
           </Form>
         </Formik>
