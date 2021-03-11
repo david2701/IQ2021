@@ -14,6 +14,7 @@ import {
 import { api } from "../api";
 import useBreadcrumbs from "../components/breadcrumbs/use-breadcrumbs";
 import { CountrySelect } from "../country/CountrySelect";
+import { MatchSelect } from "../match/MatchSelect";
 import { Team } from "../api/team/Team";
 import { TeamCreateInput } from "../api/team/TeamCreateInput";
 
@@ -62,6 +63,12 @@ export const CreateTeam = (): React.ReactElement => {
           </div>
           <div>
             <TextField label="League" name="league" />
+          </div>
+          <div>
+            <MatchSelect label="Matches" name="matches.id" />
+          </div>
+          <div>
+            <MatchSelect label="Visitor" name="visitor.id" />
           </div>
         </Form>
       </Formik>

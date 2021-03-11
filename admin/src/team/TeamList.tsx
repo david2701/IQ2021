@@ -17,6 +17,7 @@ import {
 } from "@amplication/design-system";
 
 import { CountryTitle } from "../country/CountryTitle";
+import { MatchTitle } from "../match/MatchTitle";
 import { Team } from "../api/team/Team";
 
 type Data = Team[];
@@ -48,8 +49,18 @@ const FIELDS: DataField[] = [
     sortable: false,
   },
   {
+    name: "matches",
+    title: "Matches",
+    sortable: false,
+  },
+  {
     name: "updatedAt",
     title: "Updated At",
+    sortable: false,
+  },
+  {
+    name: "visitor",
+    title: "Visitor",
     sortable: false,
   },
 ];
@@ -96,7 +107,13 @@ export const TeamList = (): React.ReactElement => {
                   <>{item.league}</>
                 </DataGridCell>
                 <DataGridCell>
+                  <MatchTitle id={item.matches?.id} />
+                </DataGridCell>
+                <DataGridCell>
                   <TimeSince time={item.updatedAt} />
+                </DataGridCell>
+                <DataGridCell>
+                  <MatchTitle id={item.visitor?.id} />
                 </DataGridCell>
               </DataGridRow>
             );

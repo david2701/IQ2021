@@ -12,6 +12,8 @@ import { PlayerWhereInput } from "./PlayerWhereInput";
 import { PlayerWhereUniqueInput } from "./PlayerWhereUniqueInput";
 import { PlayerUpdateInput } from "./PlayerUpdateInput";
 import { Player } from "./Player";
+import { MyTeamWhereInput } from "../../myTeam/base/MyTeamWhereInput";
+import { MyTeam } from "../../myTeam/base/MyTeam";
 
 export class PlayerControllerBase {
   constructor(
@@ -291,5 +293,161 @@ export class PlayerControllerBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
+  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.Get("/:id/myTeams")
+  @nestAccessControl.UseRoles({
+    resource: "Player",
+    action: "read",
+    possession: "any",
+  })
+  async findManyMyTeams(
+    @common.Param() params: PlayerWhereUniqueInput,
+    @common.Query() query: MyTeamWhereInput,
+    @nestAccessControl.UserRoles() userRoles: string[]
+  ): Promise<MyTeam[]> {
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "read",
+      possession: "any",
+      resource: "MyTeam",
+    });
+    const results = await this.service.findOne({ where: params }).myTeams({
+      where: query,
+      select: {
+        createdAt: true,
+        id: true,
+        updatedAt: true,
+      },
+    });
+    return results.map((result) => permission.filter(result));
+  }
+
+  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
+  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.Post("/:id/myTeams")
+  @nestAccessControl.UseRoles({
+    resource: "Player",
+    action: "update",
+    possession: "any",
+  })
+  async createMyTeams(
+    @common.Param() params: PlayerWhereUniqueInput,
+    @common.Body() body: PlayerWhereUniqueInput[],
+    @nestAccessControl.UserRoles() userRoles: string[]
+  ): Promise<void> {
+    const data = {
+      myTeams: {
+        connect: body,
+      },
+    };
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "update",
+      possession: "any",
+      resource: "Player",
+    });
+    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
+    if (invalidAttributes.length) {
+      const roles = userRoles
+        .map((role: string) => JSON.stringify(role))
+        .join(",");
+      throw new common.ForbiddenException(
+        `Updating the relationship: ${
+          invalidAttributes[0]
+        } of ${"Player"} is forbidden for roles: ${roles}`
+      );
+    }
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
+  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.Patch("/:id/myTeams")
+  @nestAccessControl.UseRoles({
+    resource: "Player",
+    action: "update",
+    possession: "any",
+  })
+  async updateMyTeams(
+    @common.Param() params: PlayerWhereUniqueInput,
+    @common.Body() body: PlayerWhereUniqueInput[],
+    @nestAccessControl.UserRoles() userRoles: string[]
+  ): Promise<void> {
+    const data = {
+      myTeams: {
+        set: body,
+      },
+    };
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "update",
+      possession: "any",
+      resource: "Player",
+    });
+    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
+    if (invalidAttributes.length) {
+      const roles = userRoles
+        .map((role: string) => JSON.stringify(role))
+        .join(",");
+      throw new common.ForbiddenException(
+        `Updating the relationship: ${
+          invalidAttributes[0]
+        } of ${"Player"} is forbidden for roles: ${roles}`
+      );
+    }
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
+  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.Delete("/:id/myTeams")
+  @nestAccessControl.UseRoles({
+    resource: "Player",
+    action: "update",
+    possession: "any",
+  })
+  async deleteMyTeams(
+    @common.Param() params: PlayerWhereUniqueInput,
+    @common.Body() body: PlayerWhereUniqueInput[],
+    @nestAccessControl.UserRoles() userRoles: string[]
+  ): Promise<void> {
+    const data = {
+      myTeams: {
+        disconnect: body,
+      },
+    };
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "update",
+      possession: "any",
+      resource: "Player",
+    });
+    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
+    if (invalidAttributes.length) {
+      const roles = userRoles
+        .map((role: string) => JSON.stringify(role))
+        .join(",");
+      throw new common.ForbiddenException(
+        `Updating the relationship: ${
+          invalidAttributes[0]
+        } of ${"Player"} is forbidden for roles: ${roles}`
+      );
+    }
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
   }
 }

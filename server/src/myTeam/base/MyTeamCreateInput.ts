@@ -1,0 +1,2 @@
+class MyTeamCreateInput {}
+export { MyTeamCreateInput };

@@ -13,6 +13,8 @@ import { DeletePlayerArgs } from "./DeletePlayerArgs";
 import { FindManyPlayerArgs } from "./FindManyPlayerArgs";
 import { FindOnePlayerArgs } from "./FindOnePlayerArgs";
 import { Player } from "./Player";
+import { FindManyMyTeamArgs } from "../../myTeam/base/FindManyMyTeamArgs";
+import { MyTeam } from "../../myTeam/base/MyTeam";
 import { Team } from "../../team/base/Team";
 import { PlayerService } from "../player.service";
 
@@ -188,6 +190,30 @@ export class PlayerResolverBase {
       }
       throw error;
     }
+  }
+
+  @graphql.ResolveField(() => [MyTeam])
+  @nestAccessControl.UseRoles({
+    resource: "Player",
+    action: "read",
+    possession: "any",
+  })
+  async myTeams(
+    @graphql.Parent() parent: Player,
+    @graphql.Args() args: FindManyMyTeamArgs,
+    @gqlUserRoles.UserRoles() userRoles: string[]
+  ): Promise<MyTeam[]> {
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "read",
+      possession: "any",
+      resource: "MyTeam",
+    });
+    const results = await this.service
+      .findOne({ where: { id: parent.id } })
+      // @ts-ignore
+      .myTeams(args);
+    return results.map((result) => permission.filter(result));
   }
 
   @graphql.ResolveField(() => Team, { nullable: true })
