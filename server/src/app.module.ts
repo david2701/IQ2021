@@ -4,6 +4,8 @@ import { TeamModule } from "./team/team.module";
 import { CountryModule } from "./country/country.module";
 import { PlayerModule } from "./player/player.module";
 import { MatchModule } from "./match/match.module";
+import { GoalkeeperModule } from "./goalkeeper/goalkeeper.module";
+import { MyTeamModule } from "./myTeam/myTeam.module";
 import { ACLModule } from "./auth/acl.module";
 import { AuthModule } from "./auth/auth.module";
 import { MorganModule } from "nest-morgan";
@@ -20,6 +22,8 @@ import { GraphQLModule } from "@nestjs/graphql";
     CountryModule,
     PlayerModule,
     MatchModule,
+    GoalkeeperModule,
+    MyTeamModule,
     ACLModule,
     AuthModule,
     MorganModule,

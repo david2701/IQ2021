@@ -13,11 +13,10 @@ import { DeleteTeamArgs } from "./DeleteTeamArgs";
 import { FindManyTeamArgs } from "./FindManyTeamArgs";
 import { FindOneTeamArgs } from "./FindOneTeamArgs";
 import { Team } from "./Team";
-import { FindManyMatchArgs } from "../../match/base/FindManyMatchArgs";
-import { Match } from "../../match/base/Match";
 import { FindManyPlayerArgs } from "../../player/base/FindManyPlayerArgs";
 import { Player } from "../../player/base/Player";
 import { Country } from "../../country/base/Country";
+import { Match } from "../../match/base/Match";
 import { TeamService } from "../team.service";
 
 @graphql.Resolver(() => Team)
@@ -113,6 +112,18 @@ export class TeamResolverBase {
               connect: args.data.country,
             }
           : undefined,
+
+        matches: args.data.matches
+          ? {
+              connect: args.data.matches,
+            }
+          : undefined,
+
+        visitor: args.data.visitor
+          ? {
+              connect: args.data.visitor,
+            }
+          : undefined,
       },
     });
   }
@@ -160,6 +171,18 @@ export class TeamResolverBase {
                 connect: args.data.country,
               }
             : undefined,
+
+          matches: args.data.matches
+            ? {
+                connect: args.data.matches,
+              }
+            : undefined,
+
+          visitor: args.data.visitor
+            ? {
+                connect: args.data.visitor,
+              }
+            : undefined,
         },
       });
     } catch (error) {
@@ -192,30 +215,6 @@ export class TeamResolverBase {
     }
   }
 
-  @graphql.ResolveField(() => [Match])
-  @nestAccessControl.UseRoles({
-    resource: "Team",
-    action: "read",
-    possession: "any",
-  })
-  async matches(
-    @graphql.Parent() parent: Team,
-    @graphql.Args() args: FindManyMatchArgs,
-    @gqlUserRoles.UserRoles() userRoles: string[]
-  ): Promise<Match[]> {
-    const permission = this.rolesBuilder.permission({
-      role: userRoles,
-      action: "read",
-      possession: "any",
-      resource: "Match",
-    });
-    const results = await this.service
-      .findOne({ where: { id: parent.id } })
-      // @ts-ignore
-      .matches(args);
-    return results.map((result) => permission.filter(result));
-  }
-
   @graphql.ResolveField(() => [Player])
   @nestAccessControl.UseRoles({
     resource: "Team",
@@ -240,30 +239,6 @@ export class TeamResolverBase {
     return results.map((result) => permission.filter(result));
   }
 
-  @graphql.ResolveField(() => [Match])
-  @nestAccessControl.UseRoles({
-    resource: "Team",
-    action: "read",
-    possession: "any",
-  })
-  async visitor(
-    @graphql.Parent() parent: Team,
-    @graphql.Args() args: FindManyMatchArgs,
-    @gqlUserRoles.UserRoles() userRoles: string[]
-  ): Promise<Match[]> {
-    const permission = this.rolesBuilder.permission({
-      role: userRoles,
-      action: "read",
-      possession: "any",
-      resource: "Match",
-    });
-    const results = await this.service
-      .findOne({ where: { id: parent.id } })
-      // @ts-ignore
-      .visitor(args);
-    return results.map((result) => permission.filter(result));
-  }
-
   @graphql.ResolveField(() => Country, { nullable: true })
   @nestAccessControl.UseRoles({
     resource: "Team",
@@ -283,6 +258,58 @@ export class TeamResolverBase {
     const result = await this.service
       .findOne({ where: { id: parent.id } })
       .country();
+
+    if (!result) {
+      return null;
+    }
+    return permission.filter(result);
+  }
+
+  @graphql.ResolveField(() => Match, { nullable: true })
+  @nestAccessControl.UseRoles({
+    resource: "Team",
+    action: "read",
+    possession: "any",
+  })
+  async matches(
+    @graphql.Parent() parent: Team,
+    @gqlUserRoles.UserRoles() userRoles: string[]
+  ): Promise<Match | null> {
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "read",
+      possession: "any",
+      resource: "Match",
+    });
+    const result = await this.service
+      .findOne({ where: { id: parent.id } })
+      .matches();
+
+    if (!result) {
+      return null;
+    }
+    return permission.filter(result);
+  }
+
+  @graphql.ResolveField(() => Match, { nullable: true })
+  @nestAccessControl.UseRoles({
+    resource: "Team",
+    action: "read",
+    possession: "any",
+  })
+  async visitor(
+    @graphql.Parent() parent: Team,
+    @gqlUserRoles.UserRoles() userRoles: string[]
+  ): Promise<Match | null> {
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "read",
+      possession: "any",
+      resource: "Match",
+    });
+    const result = await this.service
+      .findOne({ where: { id: parent.id } })
+      .visitor();
 
     if (!result) {
       return null;
