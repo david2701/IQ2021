@@ -11,6 +11,8 @@ import { UserService } from "../user.service";
 const nonExistingId = "nonExistingId";
 const existingId = "existingId";
 const CREATE_INPUT = {
+  abonne: "exampleAbonne",
+  bd: new Date(),
   createdAt: new Date(),
   firstName: "exampleFirstName",
   id: "exampleId",
@@ -21,6 +23,8 @@ const CREATE_INPUT = {
   username: "exampleUsername",
 };
 const CREATE_RESULT = {
+  abonne: "exampleAbonne",
+  bd: new Date(),
   createdAt: new Date(),
   firstName: "exampleFirstName",
   id: "exampleId",
@@ -32,6 +36,8 @@ const CREATE_RESULT = {
 };
 const FIND_MANY_RESULT = [
   {
+    abonne: "exampleAbonne",
+    bd: new Date(),
     createdAt: new Date(),
     firstName: "exampleFirstName",
     id: "exampleId",
@@ -43,6 +49,8 @@ const FIND_MANY_RESULT = [
   },
 ];
 const FIND_ONE_RESULT = {
+  abonne: "exampleAbonne",
+  bd: new Date(),
   createdAt: new Date(),
   firstName: "exampleFirstName",
   id: "exampleId",
@@ -116,6 +124,7 @@ describe("User", () => {
       .expect(HttpStatus.CREATED)
       .expect({
         ...CREATE_RESULT,
+        bd: CREATE_RESULT.bd.toISOString(),
         createdAt: CREATE_RESULT.createdAt.toISOString(),
         updatedAt: CREATE_RESULT.updatedAt.toISOString(),
       });
@@ -128,6 +137,7 @@ describe("User", () => {
       .expect([
         {
           ...FIND_MANY_RESULT[0],
+          bd: FIND_MANY_RESULT[0].bd.toISOString(),
           createdAt: FIND_MANY_RESULT[0].createdAt.toISOString(),
           updatedAt: FIND_MANY_RESULT[0].updatedAt.toISOString(),
         },
@@ -151,6 +161,7 @@ describe("User", () => {
       .expect(HttpStatus.OK)
       .expect({
         ...FIND_ONE_RESULT,
+        bd: FIND_ONE_RESULT.bd.toISOString(),
         createdAt: FIND_ONE_RESULT.createdAt.toISOString(),
         updatedAt: FIND_ONE_RESULT.updatedAt.toISOString(),
       });

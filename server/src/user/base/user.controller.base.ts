@@ -57,6 +57,8 @@ export class UserControllerBase {
       ...query,
       data: data,
       select: {
+        abonne: true,
+        bd: true,
         createdAt: true,
         firstName: true,
         id: true,
@@ -91,6 +93,8 @@ export class UserControllerBase {
     const results = await this.service.findMany({
       where: query,
       select: {
+        abonne: true,
+        bd: true,
         createdAt: true,
         firstName: true,
         id: true,
@@ -129,6 +133,8 @@ export class UserControllerBase {
       ...query,
       where: params,
       select: {
+        abonne: true,
+        bd: true,
         createdAt: true,
         firstName: true,
         id: true,
@@ -189,6 +195,8 @@ export class UserControllerBase {
         where: params,
         data: data,
         select: {
+          abonne: true,
+          bd: true,
           createdAt: true,
           firstName: true,
           id: true,
@@ -228,6 +236,8 @@ export class UserControllerBase {
         ...query,
         where: params,
         select: {
+          abonne: true,
+          bd: true,
           createdAt: true,
           firstName: true,
           id: true,
