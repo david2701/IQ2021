@@ -3,6 +3,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { CountryWhereUniqueInput } from "../../country/base/CountryWhereUniqueInput";
 import { Transform, Type } from "class-transformer";
 import { ValidateNested, IsOptional, IsDate, IsString } from "class-validator";
+import { MatchWhereUniqueInput } from "../../match/base/MatchWhereUniqueInput";
 @InputType()
 class TeamWhereInput {
   @ApiProperty({
@@ -46,6 +47,15 @@ class TeamWhereInput {
   league?: string | null;
   @ApiProperty({
     required: false,
+    type: MatchWhereUniqueInput,
+  })
+  @Transform(JSON.parse)
+  @ValidateNested()
+  @Type(() => MatchWhereUniqueInput)
+  @IsOptional()
+  matches?: MatchWhereUniqueInput | null;
+  @ApiProperty({
+    required: false,
   })
   @IsDate()
   @Type(() => Date)
@@ -54,5 +64,14 @@ class TeamWhereInput {
     nullable: true,
   })
   updatedAt?: Date;
+  @ApiProperty({
+    required: false,
+    type: MatchWhereUniqueInput,
+  })
+  @Transform(JSON.parse)
+  @ValidateNested()
+  @Type(() => MatchWhereUniqueInput)
+  @IsOptional()
+  visitor?: MatchWhereUniqueInput;
 }
 export { TeamWhereInput };
