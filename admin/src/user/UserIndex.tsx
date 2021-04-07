@@ -4,7 +4,7 @@ import PrivateRoute from "../components/PrivateRoute";
 import useBreadcrumbs from "../components/breadcrumbs/use-breadcrumbs";
 import { UserList } from "./UserList";
 import { CreateUser } from "./CreateUser";
-import { User } from "./User";
+import { ViewUser } from "./ViewUser";
 
 export const UserIndex = (): React.ReactElement => {
   useBreadcrumbs("/users/", "Users");
@@ -13,7 +13,7 @@ export const UserIndex = (): React.ReactElement => {
     <Switch>
       <PrivateRoute exact path={"/users/"} component={UserList} />
       <PrivateRoute path={"/users/new"} component={CreateUser} />
-      <PrivateRoute path={"/users/:id"} component={User} />
+      <PrivateRoute path={"/users/:id"} component={ViewUser} />
     </Switch>
   );
 };

@@ -4,7 +4,7 @@ import PrivateRoute from "../components/PrivateRoute";
 import useBreadcrumbs from "../components/breadcrumbs/use-breadcrumbs";
 import { GoalkeeperList } from "./GoalkeeperList";
 import { CreateGoalkeeper } from "./CreateGoalkeeper";
-import { Goalkeeper } from "./Goalkeeper";
+import { ViewGoalkeeper } from "./ViewGoalkeeper";
 
 export const GoalkeeperIndex = (): React.ReactElement => {
   useBreadcrumbs("/goalkeepers/", "Goalkeepers");
@@ -13,7 +13,7 @@ export const GoalkeeperIndex = (): React.ReactElement => {
     <Switch>
       <PrivateRoute exact path={"/goalkeepers/"} component={GoalkeeperList} />
       <PrivateRoute path={"/goalkeepers/new"} component={CreateGoalkeeper} />
-      <PrivateRoute path={"/goalkeepers/:id"} component={Goalkeeper} />
+      <PrivateRoute path={"/goalkeepers/:id"} component={ViewGoalkeeper} />
     </Switch>
   );
 };

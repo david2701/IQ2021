@@ -14,7 +14,7 @@ import {
 import { api } from "../api";
 import useBreadcrumbs from "../components/breadcrumbs/use-breadcrumbs";
 import { TeamSelect } from "../team/TeamSelect";
-import { Player } from "../api/player/Player";
+import { Player as TPlayer } from "../api/player/Player";
 import { PlayerCreateInput } from "../api/player/PlayerCreateInput";
 
 const INITIAL_VALUES = {} as PlayerCreateInput;
@@ -24,7 +24,7 @@ export const CreatePlayer = (): React.ReactElement => {
   const history = useHistory();
 
   const [create, { error, isError, isLoading }] = useMutation<
-    Player,
+    TPlayer,
     AxiosError,
     PlayerCreateInput
   >(

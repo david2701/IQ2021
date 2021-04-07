@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import { AxiosError } from "axios";
 import { useQuery } from "react-query";
 import { api } from "../api";
-import { Team } from "../api/team/Team";
+import { Team as TTeam } from "../api/team/Team";
 
 type Props = { id: string };
 
 export const TeamTitle = ({ id }: Props) => {
   const { data, isLoading, isError, error } = useQuery<
-    Team,
+    TTeam,
     AxiosError,
     [string, string]
   >(["get-/api/teams", id], async (key: string, id: string) => {
@@ -27,7 +27,7 @@ export const TeamTitle = ({ id }: Props) => {
 
   return (
     <Link to={`${"/api/teams"}/${id}`} className="entity-id">
-      {data?.league && data?.league.length ? data.league : data?.id}
+      {data?.colorA && data?.colorA.length ? data.colorA : data?.id}
     </Link>
   );
 };

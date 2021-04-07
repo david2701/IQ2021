@@ -55,11 +55,26 @@ export class PlayerLegendaryControllerBase {
     // @ts-ignore
     return await this.service.create({
       ...query,
-      data: data,
+      data: {
+        ...data,
+
+        team: data.team
+          ? {
+              connect: data.team,
+            }
+          : undefined,
+      },
       select: {
         createdAt: true,
         id: true,
         name: true,
+
+        team: {
+          select: {
+            id: true,
+          },
+        },
+
         updatedAt: true,
       },
     });
@@ -91,6 +106,13 @@ export class PlayerLegendaryControllerBase {
         createdAt: true,
         id: true,
         name: true,
+
+        team: {
+          select: {
+            id: true,
+          },
+        },
+
         updatedAt: true,
       },
     });
@@ -126,6 +148,13 @@ export class PlayerLegendaryControllerBase {
         createdAt: true,
         id: true,
         name: true,
+
+        team: {
+          select: {
+            id: true,
+          },
+        },
+
         updatedAt: true,
       },
     });
@@ -178,11 +207,26 @@ export class PlayerLegendaryControllerBase {
       return await this.service.update({
         ...query,
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          team: data.team
+            ? {
+                connect: data.team,
+              }
+            : undefined,
+        },
         select: {
           createdAt: true,
           id: true,
           name: true,
+
+          team: {
+            select: {
+              id: true,
+            },
+          },
+
           updatedAt: true,
         },
       });
@@ -219,6 +263,13 @@ export class PlayerLegendaryControllerBase {
           createdAt: true,
           id: true,
           name: true,
+
+          team: {
+            select: {
+              id: true,
+            },
+          },
+
           updatedAt: true,
         },
       });

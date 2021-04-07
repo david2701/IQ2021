@@ -17,9 +17,9 @@ import {
 } from "@amplication/design-system";
 
 import { TeamTitle } from "../team/TeamTitle";
-import { Match } from "../api/match/Match";
+import { Match as TMatch } from "../api/match/Match";
 
-type Data = Match[];
+type Data = TMatch[];
 
 const SORT_DATA: SortData = {
   field: null,
@@ -83,7 +83,7 @@ export const MatchList = (): React.ReactElement => {
         }
       >
         {data &&
-          data.map((item: Match) => {
+          data.map((item: TMatch) => {
             return (
               <DataGridRow key={item.id} clickData={item}>
                 <DataGridCell>

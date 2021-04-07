@@ -3,9 +3,9 @@ import { AxiosError } from "axios";
 import { useQuery } from "react-query";
 import { api } from "../api";
 import { SelectField, SelectFieldProps } from "@amplication/design-system";
-import { Country } from "../api/country/Country";
+import { Country as TCountry } from "../api/country/Country";
 
-type Data = Country[];
+type Data = TCountry[];
 
 type Props = Omit<SelectFieldProps, "options">;
 

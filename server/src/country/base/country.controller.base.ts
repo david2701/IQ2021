@@ -260,7 +260,7 @@ export class CountryControllerBase {
       possession: "any",
       resource: "Stade",
     });
-    const results = await this.service.findOne({ where: params }).stades({
+    const results = await this.service.findStades(params.id, {
       where: query,
       select: {
         country: {
@@ -423,9 +423,13 @@ export class CountryControllerBase {
       possession: "any",
       resource: "Team",
     });
-    const results = await this.service.findOne({ where: params }).teams({
+    const results = await this.service.findTeams(params.id, {
       where: query,
       select: {
+        colorA: true,
+        colorB: true,
+        colorC: true,
+
         country: {
           select: {
             id: true,
@@ -435,6 +439,7 @@ export class CountryControllerBase {
         createdAt: true,
         id: true,
         league: true,
+        logo: true,
 
         matches: {
           select: {

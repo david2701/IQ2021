@@ -10,10 +10,10 @@ import { isRecordNotFoundError } from "../../prisma.util";
 import { CreatePlayerArgs } from "./CreatePlayerArgs";
 import { UpdatePlayerArgs } from "./UpdatePlayerArgs";
 import { DeletePlayerArgs } from "./DeletePlayerArgs";
-import { FindManyPlayerArgs } from "./FindManyPlayerArgs";
-import { FindOnePlayerArgs } from "./FindOnePlayerArgs";
+import { PlayerFindManyArgs } from "./PlayerFindManyArgs";
+import { PlayerFindUniqueArgs } from "./PlayerFindUniqueArgs";
 import { Player } from "./Player";
-import { FindManyMyTeamArgs } from "../../myTeam/base/FindManyMyTeamArgs";
+import { MyTeamFindManyArgs } from "../../myTeam/base/MyTeamFindManyArgs";
 import { MyTeam } from "../../myTeam/base/MyTeam";
 import { Team } from "../../team/base/Team";
 import { PlayerService } from "../player.service";
@@ -33,7 +33,7 @@ export class PlayerResolverBase {
     possession: "any",
   })
   async players(
-    @graphql.Args() args: FindManyPlayerArgs,
+    @graphql.Args() args: PlayerFindManyArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<Player[]> {
     const permission = this.rolesBuilder.permission({
@@ -53,7 +53,7 @@ export class PlayerResolverBase {
     possession: "own",
   })
   async player(
-    @graphql.Args() args: FindOnePlayerArgs,
+    @graphql.Args() args: PlayerFindUniqueArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<Player | null> {
     const permission = this.rolesBuilder.permission({
@@ -200,7 +200,7 @@ export class PlayerResolverBase {
   })
   async myTeams(
     @graphql.Parent() parent: Player,
-    @graphql.Args() args: FindManyMyTeamArgs,
+    @graphql.Args() args: MyTeamFindManyArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<MyTeam[]> {
     const permission = this.rolesBuilder.permission({
@@ -209,10 +209,7 @@ export class PlayerResolverBase {
       possession: "any",
       resource: "MyTeam",
     });
-    const results = await this.service
-      .findOne({ where: { id: parent.id } })
-      // @ts-ignore
-      .myTeams(args);
+    const results = await this.service.findMyTeams(parent.id, args);
     return results.map((result) => permission.filter(result));
   }
 
@@ -232,9 +229,7 @@ export class PlayerResolverBase {
       possession: "any",
       resource: "Team",
     });
-    const result = await this.service
-      .findOne({ where: { id: parent.id } })
-      .team();
+    const result = await this.service.getTeam(parent.id);
 
     if (!result) {
       return null;

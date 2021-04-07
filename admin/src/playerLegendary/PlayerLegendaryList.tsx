@@ -16,9 +16,10 @@ import {
   TimeSince,
 } from "@amplication/design-system";
 
-import { PlayerLegendary } from "../api/playerLegendary/PlayerLegendary";
+import { TeamTitle } from "../team/TeamTitle";
+import { PlayerLegendary as TPlayerLegendary } from "../api/playerLegendary/PlayerLegendary";
 
-type Data = PlayerLegendary[];
+type Data = TPlayerLegendary[];
 
 const SORT_DATA: SortData = {
   field: null,
@@ -39,6 +40,11 @@ const FIELDS: DataField[] = [
   {
     name: "name",
     title: "Name",
+    sortable: false,
+  },
+  {
+    name: "team",
+    title: "Team",
     sortable: false,
   },
   {
@@ -72,7 +78,7 @@ export const PlayerLegendaryList = (): React.ReactElement => {
         }
       >
         {data &&
-          data.map((item: PlayerLegendary) => {
+          data.map((item: TPlayerLegendary) => {
             return (
               <DataGridRow key={item.id} clickData={item}>
                 <DataGridCell>
@@ -88,6 +94,9 @@ export const PlayerLegendaryList = (): React.ReactElement => {
                 </DataGridCell>
                 <DataGridCell>
                   <>{item.name}</>
+                </DataGridCell>
+                <DataGridCell>
+                  <TeamTitle id={item.team?.id} />
                 </DataGridCell>
                 <DataGridCell>
                   <TimeSince time={item.updatedAt} />

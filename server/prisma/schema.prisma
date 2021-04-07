@@ -21,16 +21,21 @@ model User {
 }
 
 model Team {
-  country   Country? @relation(fields: [countryId])
-  countryId String?
-  createdAt DateTime @default(now())
-  id        String   @id @default(cuid())
-  league    String?
-  matches   Match?   @relation(name: "local", fields: [matchesId])
-  matchesId String?
-  players   Player[]
-  updatedAt DateTime @updatedAt
-  visitor   Match    @relation(name: "MatchVisitorTeamVisitor")
+  colorA            String?
+  colorB            String?
+  colorC            String?
+  country           Country?          @relation(fields: [countryId], references: [id])
+  countryId         String?
+  createdAt         DateTime          @default(now())
+  id                String            @id @default(cuid())
+  league            String?
+  logo              String?
+  matches           Match?            @relation(name: "local", fields: [matchesId], references: [id])
+  matchesId         String?
+  playerLegendaries PlayerLegendary[]
+  players           Player[]
+  updatedAt         DateTime          @updatedAt
+  visitor           Match             @relation(name: "MatchVisitorTeamVisitor")
 }
 
 model Country {
@@ -50,7 +55,7 @@ model Player {
   myTeams   MyTeam[]
   name      String?
   number    String?
-  team      Team?    @relation(fields: [teamId])
+  team      Team?    @relation(fields: [teamId], references: [id])
   teamId    String?
   updatedAt DateTime @updatedAt
 }
@@ -61,13 +66,13 @@ model Match {
   id        String    @id @default(cuid())
   local     Team      @relation(name: "local")
   updatedAt DateTime  @updatedAt
-  visitor   Team?     @relation(name: "MatchVisitorTeamVisitor", fields: [visitorId])
+  visitor   Team?     @relation(name: "MatchVisitorTeamVisitor", fields: [visitorId], references: [id])
   visitorId String?
 }
 
 model Goalkeeper {
   createdAt          DateTime     @default(now())
-  goalkeeper         Goalkeeper?  @relation(name: "GoalkeeperOnGoalkeepers", fields: [goalkeeperId])
+  goalkeeper         Goalkeeper?  @relation(name: "GoalkeeperOnGoalkeepers", fields: [goalkeeperId], references: [id])
   goalkeeperId       String?
   goalkeepers        Goalkeeper[] @relation(name: "GoalkeeperOnGoalkeepers")
   id                 String       @id @default(cuid())
@@ -83,7 +88,7 @@ model MyTeam {
 }
 
 model Stade {
-  country   Country? @relation(fields: [countryId])
+  country   Country? @relation(fields: [countryId], references: [id])
   countryId String?
   createdAt DateTime @default(now())
   id        String   @id @default(cuid())
@@ -95,5 +100,7 @@ model PlayerLegendary {
   createdAt DateTime @default(now())
   id        String   @id @default(cuid())
   name      String?
+  team      Team?    @relation(fields: [teamId], references: [id])
+  teamId    String?
   updatedAt DateTime @updatedAt
 }

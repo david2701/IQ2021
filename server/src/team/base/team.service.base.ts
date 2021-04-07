@@ -1,28 +1,85 @@
 import { PrismaService } from "nestjs-prisma";
 import {
-  FindOneTeamArgs,
-  FindManyTeamArgs,
-  TeamCreateArgs,
-  TeamUpdateArgs,
-  TeamDeleteArgs,
-  Subset,
+  Prisma,
+  Team,
+  PlayerLegendary,
+  Player,
+  Country,
+  Match,
 } from "@prisma/client";
 
 export class TeamServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
-  findMany<T extends FindManyTeamArgs>(args: Subset<T, FindManyTeamArgs>) {
+
+  async findMany<T extends Prisma.TeamFindManyArgs>(
+    args: Prisma.SelectSubset<T, Prisma.TeamFindManyArgs>
+  ): Promise<Team[]> {
     return this.prisma.team.findMany(args);
   }
-  findOne<T extends FindOneTeamArgs>(args: Subset<T, FindOneTeamArgs>) {
-    return this.prisma.team.findOne(args);
+  async findOne<T extends Prisma.TeamFindUniqueArgs>(
+    args: Prisma.SelectSubset<T, Prisma.TeamFindUniqueArgs>
+  ): Promise<Team | null> {
+    return this.prisma.team.findUnique(args);
   }
-  create<T extends TeamCreateArgs>(args: Subset<T, TeamCreateArgs>) {
+  async create<T extends Prisma.TeamCreateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.TeamCreateArgs>
+  ): Promise<Team> {
     return this.prisma.team.create<T>(args);
   }
-  update<T extends TeamUpdateArgs>(args: Subset<T, TeamUpdateArgs>) {
+  async update<T extends Prisma.TeamUpdateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.TeamUpdateArgs>
+  ): Promise<Team> {
     return this.prisma.team.update<T>(args);
   }
-  delete<T extends TeamDeleteArgs>(args: Subset<T, TeamDeleteArgs>) {
+  async delete<T extends Prisma.TeamDeleteArgs>(
+    args: Prisma.SelectSubset<T, Prisma.TeamDeleteArgs>
+  ): Promise<Team> {
     return this.prisma.team.delete(args);
+  }
+
+  async findPlayerLegendaries(
+    parentId: string,
+    args: Prisma.PlayerLegendaryFindManyArgs
+  ): Promise<PlayerLegendary[]> {
+    return this.prisma.team
+      .findUnique({
+        where: { id: parentId },
+      })
+      .playerLegendaries(args);
+  }
+
+  async findPlayers(
+    parentId: string,
+    args: Prisma.PlayerFindManyArgs
+  ): Promise<Player[]> {
+    return this.prisma.team
+      .findUnique({
+        where: { id: parentId },
+      })
+      .players(args);
+  }
+
+  async getCountry(parentId: string): Promise<Country | null> {
+    return this.prisma.team
+      .findUnique({
+        where: { id: parentId },
+      })
+      .country();
+  }
+
+  async getMatches(parentId: string): Promise<Match | null> {
+    return this.prisma.team
+      .findUnique({
+        where: { id: parentId },
+      })
+      .matches();
+  }
+
+  async getVisitor(parentId: string): Promise<Match | null> {
+    return this.prisma.team
+      .findUnique({
+        where: { id: parentId },
+      })
+      .visitor();
   }
 }

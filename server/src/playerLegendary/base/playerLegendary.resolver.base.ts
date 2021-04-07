@@ -10,9 +10,10 @@ import { isRecordNotFoundError } from "../../prisma.util";
 import { CreatePlayerLegendaryArgs } from "./CreatePlayerLegendaryArgs";
 import { UpdatePlayerLegendaryArgs } from "./UpdatePlayerLegendaryArgs";
 import { DeletePlayerLegendaryArgs } from "./DeletePlayerLegendaryArgs";
-import { FindManyPlayerLegendaryArgs } from "./FindManyPlayerLegendaryArgs";
-import { FindOnePlayerLegendaryArgs } from "./FindOnePlayerLegendaryArgs";
+import { PlayerLegendaryFindManyArgs } from "./PlayerLegendaryFindManyArgs";
+import { PlayerLegendaryFindUniqueArgs } from "./PlayerLegendaryFindUniqueArgs";
 import { PlayerLegendary } from "./PlayerLegendary";
+import { Team } from "../../team/base/Team";
 import { PlayerLegendaryService } from "../playerLegendary.service";
 
 @graphql.Resolver(() => PlayerLegendary)
@@ -30,7 +31,7 @@ export class PlayerLegendaryResolverBase {
     possession: "any",
   })
   async playerLegendaries(
-    @graphql.Args() args: FindManyPlayerLegendaryArgs,
+    @graphql.Args() args: PlayerLegendaryFindManyArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<PlayerLegendary[]> {
     const permission = this.rolesBuilder.permission({
@@ -50,7 +51,7 @@ export class PlayerLegendaryResolverBase {
     possession: "own",
   })
   async playerLegendary(
-    @graphql.Args() args: FindOnePlayerLegendaryArgs,
+    @graphql.Args() args: PlayerLegendaryFindUniqueArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<PlayerLegendary | null> {
     const permission = this.rolesBuilder.permission({
@@ -100,7 +101,15 @@ export class PlayerLegendaryResolverBase {
     // @ts-ignore
     return await this.service.create({
       ...args,
-      data: args.data,
+      data: {
+        ...args.data,
+
+        team: args.data.team
+          ? {
+              connect: args.data.team,
+            }
+          : undefined,
+      },
     });
   }
 
@@ -139,7 +148,15 @@ export class PlayerLegendaryResolverBase {
       // @ts-ignore
       return await this.service.update({
         ...args,
-        data: args.data,
+        data: {
+          ...args.data,
+
+          team: args.data.team
+            ? {
+                connect: args.data.team,
+              }
+            : undefined,
+        },
       });
     } catch (error) {
       if (isRecordNotFoundError(error)) {
@@ -171,5 +188,29 @@ export class PlayerLegendaryResolverBase {
       }
       throw error;
     }
+  }
+
+  @graphql.ResolveField(() => Team, { nullable: true })
+  @nestAccessControl.UseRoles({
+    resource: "PlayerLegendary",
+    action: "read",
+    possession: "any",
+  })
+  async team(
+    @graphql.Parent() parent: PlayerLegendary,
+    @gqlUserRoles.UserRoles() userRoles: string[]
+  ): Promise<Team | null> {
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "read",
+      possession: "any",
+      resource: "Team",
+    });
+    const result = await this.service.getTeam(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return permission.filter(result);
   }
 }

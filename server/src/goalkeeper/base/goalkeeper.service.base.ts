@@ -1,38 +1,51 @@
 import { PrismaService } from "nestjs-prisma";
-import {
-  FindOneGoalkeeperArgs,
-  FindManyGoalkeeperArgs,
-  GoalkeeperCreateArgs,
-  GoalkeeperUpdateArgs,
-  GoalkeeperDeleteArgs,
-  Subset,
-} from "@prisma/client";
+import { Prisma, Goalkeeper } from "@prisma/client";
 
 export class GoalkeeperServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
-  findMany<T extends FindManyGoalkeeperArgs>(
-    args: Subset<T, FindManyGoalkeeperArgs>
-  ) {
+
+  async findMany<T extends Prisma.GoalkeeperFindManyArgs>(
+    args: Prisma.SelectSubset<T, Prisma.GoalkeeperFindManyArgs>
+  ): Promise<Goalkeeper[]> {
     return this.prisma.goalkeeper.findMany(args);
   }
-  findOne<T extends FindOneGoalkeeperArgs>(
-    args: Subset<T, FindOneGoalkeeperArgs>
-  ) {
-    return this.prisma.goalkeeper.findOne(args);
+  async findOne<T extends Prisma.GoalkeeperFindUniqueArgs>(
+    args: Prisma.SelectSubset<T, Prisma.GoalkeeperFindUniqueArgs>
+  ): Promise<Goalkeeper | null> {
+    return this.prisma.goalkeeper.findUnique(args);
   }
-  create<T extends GoalkeeperCreateArgs>(
-    args: Subset<T, GoalkeeperCreateArgs>
-  ) {
+  async create<T extends Prisma.GoalkeeperCreateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.GoalkeeperCreateArgs>
+  ): Promise<Goalkeeper> {
     return this.prisma.goalkeeper.create<T>(args);
   }
-  update<T extends GoalkeeperUpdateArgs>(
-    args: Subset<T, GoalkeeperUpdateArgs>
-  ) {
+  async update<T extends Prisma.GoalkeeperUpdateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.GoalkeeperUpdateArgs>
+  ): Promise<Goalkeeper> {
     return this.prisma.goalkeeper.update<T>(args);
   }
-  delete<T extends GoalkeeperDeleteArgs>(
-    args: Subset<T, GoalkeeperDeleteArgs>
-  ) {
+  async delete<T extends Prisma.GoalkeeperDeleteArgs>(
+    args: Prisma.SelectSubset<T, Prisma.GoalkeeperDeleteArgs>
+  ): Promise<Goalkeeper> {
     return this.prisma.goalkeeper.delete(args);
+  }
+
+  async findGoalkeepers(
+    parentId: string,
+    args: Prisma.GoalkeeperFindManyArgs
+  ): Promise<Goalkeeper[]> {
+    return this.prisma.goalkeeper
+      .findUnique({
+        where: { id: parentId },
+      })
+      .goalkeepers(args);
+  }
+
+  async getGoalkeeper(parentId: string): Promise<Goalkeeper | null> {
+    return this.prisma.goalkeeper
+      .findUnique({
+        where: { id: parentId },
+      })
+      .goalkeeper();
   }
 }

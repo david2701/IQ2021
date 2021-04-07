@@ -43,6 +43,9 @@ class MatchWhereInput {
   @ValidateNested()
   @Type(() => TeamWhereUniqueInput)
   @IsOptional()
+  @Field(() => TeamWhereUniqueInput, {
+    nullable: true,
+  })
   local?: TeamWhereUniqueInput;
   @ApiProperty({
     required: false,
@@ -62,6 +65,9 @@ class MatchWhereInput {
   @ValidateNested()
   @Type(() => TeamWhereUniqueInput)
   @IsOptional()
+  @Field(() => TeamWhereUniqueInput, {
+    nullable: true,
+  })
   visitor?: TeamWhereUniqueInput | null;
 }
 export { MatchWhereInput };

@@ -14,7 +14,7 @@ import {
 import { api } from "../api";
 import useBreadcrumbs from "../components/breadcrumbs/use-breadcrumbs";
 import { GoalkeeperSelect } from "./GoalkeeperSelect";
-import { Goalkeeper } from "../api/goalkeeper/Goalkeeper";
+import { Goalkeeper as TGoalkeeper } from "../api/goalkeeper/Goalkeeper";
 import { GoalkeeperCreateInput } from "../api/goalkeeper/GoalkeeperCreateInput";
 
 const INITIAL_VALUES = {} as GoalkeeperCreateInput;
@@ -24,7 +24,7 @@ export const CreateGoalkeeper = (): React.ReactElement => {
   const history = useHistory();
 
   const [create, { error, isError, isLoading }] = useMutation<
-    Goalkeeper,
+    TGoalkeeper,
     AxiosError,
     GoalkeeperCreateInput
   >(

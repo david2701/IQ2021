@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import { AxiosError } from "axios";
 import { useQuery } from "react-query";
 import { api } from "../api";
-import { Goalkeeper } from "../api/goalkeeper/Goalkeeper";
+import { Goalkeeper as TGoalkeeper } from "../api/goalkeeper/Goalkeeper";
 
 type Props = { id: string };
 
 export const GoalkeeperTitle = ({ id }: Props) => {
   const { data, isLoading, isError, error } = useQuery<
-    Goalkeeper,
+    TGoalkeeper,
     AxiosError,
     [string, string]
   >(["get-/api/goalkeepers", id], async (key: string, id: string) => {

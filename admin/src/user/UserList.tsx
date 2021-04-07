@@ -16,9 +16,9 @@ import {
   TimeSince,
 } from "@amplication/design-system";
 
-import { User } from "../api/user/User";
+import { User as TUser } from "../api/user/User";
 
-type Data = User[];
+type Data = TUser[];
 
 const SORT_DATA: SortData = {
   field: null,
@@ -97,7 +97,7 @@ export const UserList = (): React.ReactElement => {
         }
       >
         {data &&
-          data.map((item: User) => {
+          data.map((item: TUser) => {
             return (
               <DataGridRow key={item.id} clickData={item}>
                 <DataGridCell>

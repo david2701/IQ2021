@@ -314,7 +314,7 @@ export class PlayerControllerBase {
       possession: "any",
       resource: "MyTeam",
     });
-    const results = await this.service.findOne({ where: params }).myTeams({
+    const results = await this.service.findMyTeams(params.id, {
       where: query,
       select: {
         createdAt: true,

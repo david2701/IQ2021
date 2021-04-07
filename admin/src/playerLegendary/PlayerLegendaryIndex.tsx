@@ -4,7 +4,7 @@ import PrivateRoute from "../components/PrivateRoute";
 import useBreadcrumbs from "../components/breadcrumbs/use-breadcrumbs";
 import { PlayerLegendaryList } from "./PlayerLegendaryList";
 import { CreatePlayerLegendary } from "./CreatePlayerLegendary";
-import { PlayerLegendary } from "./PlayerLegendary";
+import { ViewPlayerLegendary } from "./ViewPlayerLegendary";
 
 export const PlayerLegendaryIndex = (): React.ReactElement => {
   useBreadcrumbs("/player-legendaries/", "Player Legendaries");
@@ -22,7 +22,7 @@ export const PlayerLegendaryIndex = (): React.ReactElement => {
       />
       <PrivateRoute
         path={"/player-legendaries/:id"}
-        component={PlayerLegendary}
+        component={ViewPlayerLegendary}
       />
     </Switch>
   );

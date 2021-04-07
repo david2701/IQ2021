@@ -13,7 +13,7 @@ import {
 } from "@amplication/design-system";
 import { api } from "../api";
 import useBreadcrumbs from "../components/breadcrumbs/use-breadcrumbs";
-import { User } from "../api/user/User";
+import { User as TUser } from "../api/user/User";
 import { UserCreateInput } from "../api/user/UserCreateInput";
 import { RoleSelect } from "../user/RoleSelect";
 
@@ -24,7 +24,7 @@ export const CreateUser = (): React.ReactElement => {
   const history = useHistory();
 
   const [create, { error, isError, isLoading }] = useMutation<
-    User,
+    TUser,
     AxiosError,
     UserCreateInput
   >(

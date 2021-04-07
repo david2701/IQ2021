@@ -17,9 +17,9 @@ import {
 } from "@amplication/design-system";
 
 import { TeamTitle } from "../team/TeamTitle";
-import { Player } from "../api/player/Player";
+import { Player as TPlayer } from "../api/player/Player";
 
-type Data = Player[];
+type Data = TPlayer[];
 
 const SORT_DATA: SortData = {
   field: null,
@@ -88,7 +88,7 @@ export const PlayerList = (): React.ReactElement => {
         }
       >
         {data &&
-          data.map((item: Player) => {
+          data.map((item: TPlayer) => {
             return (
               <DataGridRow key={item.id} clickData={item}>
                 <DataGridCell>

@@ -63,6 +63,9 @@ class PlayerWhereInput {
   @ValidateNested()
   @Type(() => TeamWhereUniqueInput)
   @IsOptional()
+  @Field(() => TeamWhereUniqueInput, {
+    nullable: true,
+  })
   team?: TeamWhereUniqueInput | null;
   @ApiProperty({
     required: false,

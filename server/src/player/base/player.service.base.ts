@@ -1,28 +1,51 @@
 import { PrismaService } from "nestjs-prisma";
-import {
-  FindOnePlayerArgs,
-  FindManyPlayerArgs,
-  PlayerCreateArgs,
-  PlayerUpdateArgs,
-  PlayerDeleteArgs,
-  Subset,
-} from "@prisma/client";
+import { Prisma, Player, MyTeam, Team } from "@prisma/client";
 
 export class PlayerServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
-  findMany<T extends FindManyPlayerArgs>(args: Subset<T, FindManyPlayerArgs>) {
+
+  async findMany<T extends Prisma.PlayerFindManyArgs>(
+    args: Prisma.SelectSubset<T, Prisma.PlayerFindManyArgs>
+  ): Promise<Player[]> {
     return this.prisma.player.findMany(args);
   }
-  findOne<T extends FindOnePlayerArgs>(args: Subset<T, FindOnePlayerArgs>) {
-    return this.prisma.player.findOne(args);
+  async findOne<T extends Prisma.PlayerFindUniqueArgs>(
+    args: Prisma.SelectSubset<T, Prisma.PlayerFindUniqueArgs>
+  ): Promise<Player | null> {
+    return this.prisma.player.findUnique(args);
   }
-  create<T extends PlayerCreateArgs>(args: Subset<T, PlayerCreateArgs>) {
+  async create<T extends Prisma.PlayerCreateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.PlayerCreateArgs>
+  ): Promise<Player> {
     return this.prisma.player.create<T>(args);
   }
-  update<T extends PlayerUpdateArgs>(args: Subset<T, PlayerUpdateArgs>) {
+  async update<T extends Prisma.PlayerUpdateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.PlayerUpdateArgs>
+  ): Promise<Player> {
     return this.prisma.player.update<T>(args);
   }
-  delete<T extends PlayerDeleteArgs>(args: Subset<T, PlayerDeleteArgs>) {
+  async delete<T extends Prisma.PlayerDeleteArgs>(
+    args: Prisma.SelectSubset<T, Prisma.PlayerDeleteArgs>
+  ): Promise<Player> {
     return this.prisma.player.delete(args);
+  }
+
+  async findMyTeams(
+    parentId: string,
+    args: Prisma.MyTeamFindManyArgs
+  ): Promise<MyTeam[]> {
+    return this.prisma.player
+      .findUnique({
+        where: { id: parentId },
+      })
+      .myTeams(args);
+  }
+
+  async getTeam(parentId: string): Promise<Team | null> {
+    return this.prisma.player
+      .findUnique({
+        where: { id: parentId },
+      })
+      .team();
   }
 }

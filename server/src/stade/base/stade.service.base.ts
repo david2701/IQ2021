@@ -1,28 +1,40 @@
 import { PrismaService } from "nestjs-prisma";
-import {
-  FindOneStadeArgs,
-  FindManyStadeArgs,
-  StadeCreateArgs,
-  StadeUpdateArgs,
-  StadeDeleteArgs,
-  Subset,
-} from "@prisma/client";
+import { Prisma, Stade, Country } from "@prisma/client";
 
 export class StadeServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
-  findMany<T extends FindManyStadeArgs>(args: Subset<T, FindManyStadeArgs>) {
+
+  async findMany<T extends Prisma.StadeFindManyArgs>(
+    args: Prisma.SelectSubset<T, Prisma.StadeFindManyArgs>
+  ): Promise<Stade[]> {
     return this.prisma.stade.findMany(args);
   }
-  findOne<T extends FindOneStadeArgs>(args: Subset<T, FindOneStadeArgs>) {
-    return this.prisma.stade.findOne(args);
+  async findOne<T extends Prisma.StadeFindUniqueArgs>(
+    args: Prisma.SelectSubset<T, Prisma.StadeFindUniqueArgs>
+  ): Promise<Stade | null> {
+    return this.prisma.stade.findUnique(args);
   }
-  create<T extends StadeCreateArgs>(args: Subset<T, StadeCreateArgs>) {
+  async create<T extends Prisma.StadeCreateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.StadeCreateArgs>
+  ): Promise<Stade> {
     return this.prisma.stade.create<T>(args);
   }
-  update<T extends StadeUpdateArgs>(args: Subset<T, StadeUpdateArgs>) {
+  async update<T extends Prisma.StadeUpdateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.StadeUpdateArgs>
+  ): Promise<Stade> {
     return this.prisma.stade.update<T>(args);
   }
-  delete<T extends StadeDeleteArgs>(args: Subset<T, StadeDeleteArgs>) {
+  async delete<T extends Prisma.StadeDeleteArgs>(
+    args: Prisma.SelectSubset<T, Prisma.StadeDeleteArgs>
+  ): Promise<Stade> {
     return this.prisma.stade.delete(args);
+  }
+
+  async getCountry(parentId: string): Promise<Country | null> {
+    return this.prisma.stade
+      .findUnique({
+        where: { id: parentId },
+      })
+      .country();
   }
 }

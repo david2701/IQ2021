@@ -12,7 +12,7 @@ import {
 } from "@amplication/design-system";
 import { api } from "../api";
 import useBreadcrumbs from "../components/breadcrumbs/use-breadcrumbs";
-import { MyTeam } from "../api/myTeam/MyTeam";
+import { MyTeam as TMyTeam } from "../api/myTeam/MyTeam";
 import { MyTeamCreateInput } from "../api/myTeam/MyTeamCreateInput";
 
 const INITIAL_VALUES = {} as MyTeamCreateInput;
@@ -22,7 +22,7 @@ export const CreateMyTeam = (): React.ReactElement => {
   const history = useHistory();
 
   const [create, { error, isError, isLoading }] = useMutation<
-    MyTeam,
+    TMyTeam,
     AxiosError,
     MyTeamCreateInput
   >(

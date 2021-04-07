@@ -18,9 +18,9 @@ import {
 
 import { CountryTitle } from "../country/CountryTitle";
 import { MatchTitle } from "../match/MatchTitle";
-import { Team } from "../api/team/Team";
+import { Team as TTeam } from "../api/team/Team";
 
-type Data = Team[];
+type Data = TTeam[];
 
 const SORT_DATA: SortData = {
   field: null,
@@ -31,6 +31,21 @@ const FIELDS: DataField[] = [
   {
     name: "id",
     title: "ID",
+    sortable: false,
+  },
+  {
+    name: "colorA",
+    title: "ColorA",
+    sortable: false,
+  },
+  {
+    name: "colorB",
+    title: "ColorB",
+    sortable: false,
+  },
+  {
+    name: "colorC",
+    title: "ColorC",
     sortable: false,
   },
   {
@@ -46,6 +61,11 @@ const FIELDS: DataField[] = [
   {
     name: "league",
     title: "League",
+    sortable: false,
+  },
+  {
+    name: "logo",
+    title: "Logo",
     sortable: false,
   },
   {
@@ -89,13 +109,22 @@ export const TeamList = (): React.ReactElement => {
         }
       >
         {data &&
-          data.map((item: Team) => {
+          data.map((item: TTeam) => {
             return (
               <DataGridRow key={item.id} clickData={item}>
                 <DataGridCell>
                   <Link className="entity-id" to={`${"/teams"}/${item.id}`}>
                     {item.id}
                   </Link>
+                </DataGridCell>
+                <DataGridCell>
+                  <>{item.colorA}</>
+                </DataGridCell>
+                <DataGridCell>
+                  <>{item.colorB}</>
+                </DataGridCell>
+                <DataGridCell>
+                  <>{item.colorC}</>
                 </DataGridCell>
                 <DataGridCell>
                   <CountryTitle id={item.country?.id} />
@@ -105,6 +134,9 @@ export const TeamList = (): React.ReactElement => {
                 </DataGridCell>
                 <DataGridCell>
                   <>{item.league}</>
+                </DataGridCell>
+                <DataGridCell>
+                  <>{item.logo}</>
                 </DataGridCell>
                 <DataGridCell>
                   <MatchTitle id={item.matches?.id} />

@@ -10,8 +10,8 @@ import { isRecordNotFoundError } from "../../prisma.util";
 import { CreateStadeArgs } from "./CreateStadeArgs";
 import { UpdateStadeArgs } from "./UpdateStadeArgs";
 import { DeleteStadeArgs } from "./DeleteStadeArgs";
-import { FindManyStadeArgs } from "./FindManyStadeArgs";
-import { FindOneStadeArgs } from "./FindOneStadeArgs";
+import { StadeFindManyArgs } from "./StadeFindManyArgs";
+import { StadeFindUniqueArgs } from "./StadeFindUniqueArgs";
 import { Stade } from "./Stade";
 import { Country } from "../../country/base/Country";
 import { StadeService } from "../stade.service";
@@ -31,7 +31,7 @@ export class StadeResolverBase {
     possession: "any",
   })
   async stades(
-    @graphql.Args() args: FindManyStadeArgs,
+    @graphql.Args() args: StadeFindManyArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<Stade[]> {
     const permission = this.rolesBuilder.permission({
@@ -51,7 +51,7 @@ export class StadeResolverBase {
     possession: "own",
   })
   async stade(
-    @graphql.Args() args: FindOneStadeArgs,
+    @graphql.Args() args: StadeFindUniqueArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<Stade | null> {
     const permission = this.rolesBuilder.permission({
@@ -206,9 +206,7 @@ export class StadeResolverBase {
       possession: "any",
       resource: "Country",
     });
-    const result = await this.service
-      .findOne({ where: { id: parent.id } })
-      .country();
+    const result = await this.service.getCountry(parent.id);
 
     if (!result) {
       return null;

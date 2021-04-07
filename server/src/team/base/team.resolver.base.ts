@@ -10,10 +10,12 @@ import { isRecordNotFoundError } from "../../prisma.util";
 import { CreateTeamArgs } from "./CreateTeamArgs";
 import { UpdateTeamArgs } from "./UpdateTeamArgs";
 import { DeleteTeamArgs } from "./DeleteTeamArgs";
-import { FindManyTeamArgs } from "./FindManyTeamArgs";
-import { FindOneTeamArgs } from "./FindOneTeamArgs";
+import { TeamFindManyArgs } from "./TeamFindManyArgs";
+import { TeamFindUniqueArgs } from "./TeamFindUniqueArgs";
 import { Team } from "./Team";
-import { FindManyPlayerArgs } from "../../player/base/FindManyPlayerArgs";
+import { PlayerLegendaryFindManyArgs } from "../../playerLegendary/base/PlayerLegendaryFindManyArgs";
+import { PlayerLegendary } from "../../playerLegendary/base/PlayerLegendary";
+import { PlayerFindManyArgs } from "../../player/base/PlayerFindManyArgs";
 import { Player } from "../../player/base/Player";
 import { Country } from "../../country/base/Country";
 import { Match } from "../../match/base/Match";
@@ -34,7 +36,7 @@ export class TeamResolverBase {
     possession: "any",
   })
   async teams(
-    @graphql.Args() args: FindManyTeamArgs,
+    @graphql.Args() args: TeamFindManyArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<Team[]> {
     const permission = this.rolesBuilder.permission({
@@ -54,7 +56,7 @@ export class TeamResolverBase {
     possession: "own",
   })
   async team(
-    @graphql.Args() args: FindOneTeamArgs,
+    @graphql.Args() args: TeamFindUniqueArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<Team | null> {
     const permission = this.rolesBuilder.permission({
@@ -215,6 +217,27 @@ export class TeamResolverBase {
     }
   }
 
+  @graphql.ResolveField(() => [PlayerLegendary])
+  @nestAccessControl.UseRoles({
+    resource: "Team",
+    action: "read",
+    possession: "any",
+  })
+  async playerLegendaries(
+    @graphql.Parent() parent: Team,
+    @graphql.Args() args: PlayerLegendaryFindManyArgs,
+    @gqlUserRoles.UserRoles() userRoles: string[]
+  ): Promise<PlayerLegendary[]> {
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "read",
+      possession: "any",
+      resource: "PlayerLegendary",
+    });
+    const results = await this.service.findPlayerLegendaries(parent.id, args);
+    return results.map((result) => permission.filter(result));
+  }
+
   @graphql.ResolveField(() => [Player])
   @nestAccessControl.UseRoles({
     resource: "Team",
@@ -223,7 +246,7 @@ export class TeamResolverBase {
   })
   async players(
     @graphql.Parent() parent: Team,
-    @graphql.Args() args: FindManyPlayerArgs,
+    @graphql.Args() args: PlayerFindManyArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<Player[]> {
     const permission = this.rolesBuilder.permission({
@@ -232,10 +255,7 @@ export class TeamResolverBase {
       possession: "any",
       resource: "Player",
     });
-    const results = await this.service
-      .findOne({ where: { id: parent.id } })
-      // @ts-ignore
-      .players(args);
+    const results = await this.service.findPlayers(parent.id, args);
     return results.map((result) => permission.filter(result));
   }
 
@@ -255,9 +275,7 @@ export class TeamResolverBase {
       possession: "any",
       resource: "Country",
     });
-    const result = await this.service
-      .findOne({ where: { id: parent.id } })
-      .country();
+    const result = await this.service.getCountry(parent.id);
 
     if (!result) {
       return null;
@@ -281,9 +299,7 @@ export class TeamResolverBase {
       possession: "any",
       resource: "Match",
     });
-    const result = await this.service
-      .findOne({ where: { id: parent.id } })
-      .matches();
+    const result = await this.service.getMatches(parent.id);
 
     if (!result) {
       return null;
@@ -307,9 +323,7 @@ export class TeamResolverBase {
       possession: "any",
       resource: "Match",
     });
-    const result = await this.service
-      .findOne({ where: { id: parent.id } })
-      .visitor();
+    const result = await this.service.getVisitor(parent.id);
 
     if (!result) {
       return null;

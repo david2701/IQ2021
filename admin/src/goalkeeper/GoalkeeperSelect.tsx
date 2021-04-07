@@ -3,9 +3,9 @@ import { AxiosError } from "axios";
 import { useQuery } from "react-query";
 import { api } from "../api";
 import { SelectField, SelectFieldProps } from "@amplication/design-system";
-import { Goalkeeper } from "../api/goalkeeper/Goalkeeper";
+import { Goalkeeper as TGoalkeeper } from "../api/goalkeeper/Goalkeeper";
 
-type Data = Goalkeeper[];
+type Data = TGoalkeeper[];
 
 type Props = Omit<SelectFieldProps, "options">;
 

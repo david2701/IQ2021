@@ -3,9 +3,9 @@ import { AxiosError } from "axios";
 import { useQuery } from "react-query";
 import { api } from "../api";
 import { SelectField, SelectFieldProps } from "@amplication/design-system";
-import { Team } from "../api/team/Team";
+import { Team as TTeam } from "../api/team/Team";
 
-type Data = Team[];
+type Data = TTeam[];
 
 type Props = Omit<SelectFieldProps, "options">;
 
@@ -19,7 +19,7 @@ export const TeamSelect = (props: Props) => {
     return data
       ? data.map((item) => ({
           value: item.id,
-          label: item.league && item.league.length ? item.league : item.id,
+          label: item.colorA && item.colorA.length ? item.colorA : item.id,
         }))
       : [];
   }, [data]);

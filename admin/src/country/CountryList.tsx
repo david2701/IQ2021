@@ -16,9 +16,9 @@ import {
   TimeSince,
 } from "@amplication/design-system";
 
-import { Country } from "../api/country/Country";
+import { Country as TCountry } from "../api/country/Country";
 
-type Data = Country[];
+type Data = TCountry[];
 
 const SORT_DATA: SortData = {
   field: null,
@@ -77,7 +77,7 @@ export const CountryList = (): React.ReactElement => {
         }
       >
         {data &&
-          data.map((item: Country) => {
+          data.map((item: TCountry) => {
             return (
               <DataGridRow key={item.id} clickData={item}>
                 <DataGridCell>

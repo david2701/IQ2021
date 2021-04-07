@@ -11,29 +11,45 @@ import { TeamService } from "../team.service";
 const nonExistingId = "nonExistingId";
 const existingId = "existingId";
 const CREATE_INPUT = {
+  colorA: "exampleColorA",
+  colorB: "exampleColorB",
+  colorC: "exampleColorC",
   createdAt: new Date(),
   id: "exampleId",
   league: "exampleLeague",
+  logo: "exampleLogo",
   updatedAt: new Date(),
 };
 const CREATE_RESULT = {
+  colorA: "exampleColorA",
+  colorB: "exampleColorB",
+  colorC: "exampleColorC",
   createdAt: new Date(),
   id: "exampleId",
   league: "exampleLeague",
+  logo: "exampleLogo",
   updatedAt: new Date(),
 };
 const FIND_MANY_RESULT = [
   {
+    colorA: "exampleColorA",
+    colorB: "exampleColorB",
+    colorC: "exampleColorC",
     createdAt: new Date(),
     id: "exampleId",
     league: "exampleLeague",
+    logo: "exampleLogo",
     updatedAt: new Date(),
   },
 ];
 const FIND_ONE_RESULT = {
+  colorA: "exampleColorA",
+  colorB: "exampleColorB",
+  colorC: "exampleColorC",
   createdAt: new Date(),
   id: "exampleId",
   league: "exampleLeague",
+  logo: "exampleLogo",
   updatedAt: new Date(),
 };
 
