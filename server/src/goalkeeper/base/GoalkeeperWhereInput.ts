@@ -23,6 +23,9 @@ class GoalkeeperWhereInput {
   @ValidateNested()
   @Type(() => GoalkeeperWhereUniqueInput)
   @IsOptional()
+  @Field(() => GoalkeeperWhereUniqueInput, {
+    nullable: true,
+  })
   goalkeeper?: GoalkeeperWhereUniqueInput | null;
   @ApiProperty({
     required: false,

@@ -1,7 +1,8 @@
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsString, IsOptional } from "class-validator";
+import { IsDate, IsString, IsOptional, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
+import { TeamWhereUniqueInput } from "../../team/base/TeamWhereUniqueInput";
 @ObjectType()
 class PlayerLegendary {
   @ApiProperty({
@@ -28,6 +29,14 @@ class PlayerLegendary {
     nullable: true,
   })
   name!: string | null;
+  @ApiProperty({
+    required: false,
+    type: TeamWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => TeamWhereUniqueInput)
+  @IsOptional()
+  team?: TeamWhereUniqueInput | null;
   @ApiProperty({
     required: true,
   })

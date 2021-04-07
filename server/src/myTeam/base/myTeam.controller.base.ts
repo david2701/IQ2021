@@ -248,7 +248,7 @@ export class MyTeamControllerBase {
       possession: "any",
       resource: "Player",
     });
-    const results = await this.service.findOne({ where: params }).players({
+    const results = await this.service.findPlayers(params.id, {
       where: query,
       select: {
         createdAt: true,

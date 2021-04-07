@@ -13,7 +13,8 @@ import {
 } from "@amplication/design-system";
 import { api } from "../api";
 import useBreadcrumbs from "../components/breadcrumbs/use-breadcrumbs";
-import { PlayerLegendary } from "../api/playerLegendary/PlayerLegendary";
+import { TeamSelect } from "../team/TeamSelect";
+import { PlayerLegendary as TPlayerLegendary } from "../api/playerLegendary/PlayerLegendary";
 import { PlayerLegendaryCreateInput } from "../api/playerLegendary/PlayerLegendaryCreateInput";
 
 const INITIAL_VALUES = {} as PlayerLegendaryCreateInput;
@@ -23,7 +24,7 @@ export const CreatePlayerLegendary = (): React.ReactElement => {
   const history = useHistory();
 
   const [create, { error, isError, isLoading }] = useMutation<
-    PlayerLegendary,
+    TPlayerLegendary,
     AxiosError,
     PlayerLegendaryCreateInput
   >(
@@ -58,6 +59,9 @@ export const CreatePlayerLegendary = (): React.ReactElement => {
         >
           <div>
             <TextField label="Name" name="name" />
+          </div>
+          <div>
+            <TeamSelect label="Team" name="team.id" />
           </div>
         </Form>
       </Formik>

@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import { AxiosError } from "axios";
 import { useQuery } from "react-query";
 import { api } from "../api";
-import { Match } from "../api/match/Match";
+import { Match as TMatch } from "../api/match/Match";
 
 type Props = { id: string };
 
 export const MatchTitle = ({ id }: Props) => {
   const { data, isLoading, isError, error } = useQuery<
-    Match,
+    TMatch,
     AxiosError,
     [string, string]
   >(["get-/api/matches", id], async (key: string, id: string) => {

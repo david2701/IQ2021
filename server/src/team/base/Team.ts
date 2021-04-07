@@ -1,11 +1,41 @@
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
+import { IsString, IsOptional, ValidateNested, IsDate } from "class-validator";
 import { CountryWhereUniqueInput } from "../../country/base/CountryWhereUniqueInput";
-import { ValidateNested, IsOptional, IsDate, IsString } from "class-validator";
 import { Type } from "class-transformer";
 import { MatchWhereUniqueInput } from "../../match/base/MatchWhereUniqueInput";
 @ObjectType()
 class Team {
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  colorA!: string | null;
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  colorB!: string | null;
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  colorC!: string | null;
   @ApiProperty({
     required: false,
     type: CountryWhereUniqueInput,
@@ -38,6 +68,16 @@ class Team {
     nullable: true,
   })
   league!: string | null;
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  logo!: string | null;
   @ApiProperty({
     required: false,
     type: MatchWhereUniqueInput,

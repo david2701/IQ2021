@@ -4,7 +4,7 @@ import PrivateRoute from "../components/PrivateRoute";
 import useBreadcrumbs from "../components/breadcrumbs/use-breadcrumbs";
 import { StadeList } from "./StadeList";
 import { CreateStade } from "./CreateStade";
-import { Stade } from "./Stade";
+import { ViewStade } from "./ViewStade";
 
 export const StadeIndex = (): React.ReactElement => {
   useBreadcrumbs("/stades/", "Stades");
@@ -13,7 +13,7 @@ export const StadeIndex = (): React.ReactElement => {
     <Switch>
       <PrivateRoute exact path={"/stades/"} component={StadeList} />
       <PrivateRoute path={"/stades/new"} component={CreateStade} />
-      <PrivateRoute path={"/stades/:id"} component={Stade} />
+      <PrivateRoute path={"/stades/:id"} component={ViewStade} />
     </Switch>
   );
 };

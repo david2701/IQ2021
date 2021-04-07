@@ -13,6 +13,9 @@ class StadeWhereInput {
   @ValidateNested()
   @Type(() => CountryWhereUniqueInput)
   @IsOptional()
+  @Field(() => CountryWhereUniqueInput, {
+    nullable: true,
+  })
   country?: CountryWhereUniqueInput | null;
   @ApiProperty({
     required: false,

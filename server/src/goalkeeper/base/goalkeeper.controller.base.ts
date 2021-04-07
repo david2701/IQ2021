@@ -302,7 +302,7 @@ export class GoalkeeperControllerBase {
       possession: "any",
       resource: "Goalkeeper",
     });
-    const results = await this.service.findOne({ where: params }).goalkeepers({
+    const results = await this.service.findGoalkeepers(params.id, {
       where: query,
       select: {
         createdAt: true,

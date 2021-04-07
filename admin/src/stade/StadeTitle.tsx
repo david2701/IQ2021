@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import { AxiosError } from "axios";
 import { useQuery } from "react-query";
 import { api } from "../api";
-import { Stade } from "../api/stade/Stade";
+import { Stade as TStade } from "../api/stade/Stade";
 
 type Props = { id: string };
 
 export const StadeTitle = ({ id }: Props) => {
   const { data, isLoading, isError, error } = useQuery<
-    Stade,
+    TStade,
     AxiosError,
     [string, string]
   >(["get-/api/stades", id], async (key: string, id: string) => {

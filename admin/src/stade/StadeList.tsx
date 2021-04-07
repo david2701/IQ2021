@@ -17,9 +17,9 @@ import {
 } from "@amplication/design-system";
 
 import { CountryTitle } from "../country/CountryTitle";
-import { Stade } from "../api/stade/Stade";
+import { Stade as TStade } from "../api/stade/Stade";
 
-type Data = Stade[];
+type Data = TStade[];
 
 const SORT_DATA: SortData = {
   field: null,
@@ -78,7 +78,7 @@ export const StadeList = (): React.ReactElement => {
         }
       >
         {data &&
-          data.map((item: Stade) => {
+          data.map((item: TStade) => {
             return (
               <DataGridRow key={item.id} clickData={item}>
                 <DataGridCell>

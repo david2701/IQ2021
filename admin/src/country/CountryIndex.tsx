@@ -4,7 +4,7 @@ import PrivateRoute from "../components/PrivateRoute";
 import useBreadcrumbs from "../components/breadcrumbs/use-breadcrumbs";
 import { CountryList } from "./CountryList";
 import { CreateCountry } from "./CreateCountry";
-import { Country } from "./Country";
+import { ViewCountry } from "./ViewCountry";
 
 export const CountryIndex = (): React.ReactElement => {
   useBreadcrumbs("/countries/", "Countries");
@@ -13,7 +13,7 @@ export const CountryIndex = (): React.ReactElement => {
     <Switch>
       <PrivateRoute exact path={"/countries/"} component={CountryList} />
       <PrivateRoute path={"/countries/new"} component={CreateCountry} />
-      <PrivateRoute path={"/countries/:id"} component={Country} />
+      <PrivateRoute path={"/countries/:id"} component={ViewCountry} />
     </Switch>
   );
 };

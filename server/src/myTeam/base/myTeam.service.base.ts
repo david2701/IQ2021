@@ -1,28 +1,43 @@
 import { PrismaService } from "nestjs-prisma";
-import {
-  FindOneMyTeamArgs,
-  FindManyMyTeamArgs,
-  MyTeamCreateArgs,
-  MyTeamUpdateArgs,
-  MyTeamDeleteArgs,
-  Subset,
-} from "@prisma/client";
+import { Prisma, MyTeam, Player } from "@prisma/client";
 
 export class MyTeamServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
-  findMany<T extends FindManyMyTeamArgs>(args: Subset<T, FindManyMyTeamArgs>) {
+
+  async findMany<T extends Prisma.MyTeamFindManyArgs>(
+    args: Prisma.SelectSubset<T, Prisma.MyTeamFindManyArgs>
+  ): Promise<MyTeam[]> {
     return this.prisma.myTeam.findMany(args);
   }
-  findOne<T extends FindOneMyTeamArgs>(args: Subset<T, FindOneMyTeamArgs>) {
-    return this.prisma.myTeam.findOne(args);
+  async findOne<T extends Prisma.MyTeamFindUniqueArgs>(
+    args: Prisma.SelectSubset<T, Prisma.MyTeamFindUniqueArgs>
+  ): Promise<MyTeam | null> {
+    return this.prisma.myTeam.findUnique(args);
   }
-  create<T extends MyTeamCreateArgs>(args: Subset<T, MyTeamCreateArgs>) {
+  async create<T extends Prisma.MyTeamCreateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.MyTeamCreateArgs>
+  ): Promise<MyTeam> {
     return this.prisma.myTeam.create<T>(args);
   }
-  update<T extends MyTeamUpdateArgs>(args: Subset<T, MyTeamUpdateArgs>) {
+  async update<T extends Prisma.MyTeamUpdateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.MyTeamUpdateArgs>
+  ): Promise<MyTeam> {
     return this.prisma.myTeam.update<T>(args);
   }
-  delete<T extends MyTeamDeleteArgs>(args: Subset<T, MyTeamDeleteArgs>) {
+  async delete<T extends Prisma.MyTeamDeleteArgs>(
+    args: Prisma.SelectSubset<T, Prisma.MyTeamDeleteArgs>
+  ): Promise<MyTeam> {
     return this.prisma.myTeam.delete(args);
+  }
+
+  async findPlayers(
+    parentId: string,
+    args: Prisma.PlayerFindManyArgs
+  ): Promise<Player[]> {
+    return this.prisma.myTeam
+      .findUnique({
+        where: { id: parentId },
+      })
+      .players(args);
   }
 }

@@ -15,7 +15,7 @@ import { api } from "../api";
 import useBreadcrumbs from "../components/breadcrumbs/use-breadcrumbs";
 import { CountrySelect } from "../country/CountrySelect";
 import { MatchSelect } from "../match/MatchSelect";
-import { Team } from "../api/team/Team";
+import { Team as TTeam } from "../api/team/Team";
 import { TeamCreateInput } from "../api/team/TeamCreateInput";
 
 const INITIAL_VALUES = {} as TeamCreateInput;
@@ -25,7 +25,7 @@ export const CreateTeam = (): React.ReactElement => {
   const history = useHistory();
 
   const [create, { error, isError, isLoading }] = useMutation<
-    Team,
+    TTeam,
     AxiosError,
     TeamCreateInput
   >(
@@ -59,10 +59,22 @@ export const CreateTeam = (): React.ReactElement => {
           }
         >
           <div>
+            <TextField label="ColorA" name="colorA" />
+          </div>
+          <div>
+            <TextField label="ColorB" name="colorB" />
+          </div>
+          <div>
+            <TextField label="ColorC" name="colorC" />
+          </div>
+          <div>
             <CountrySelect label="Country" name="country.id" />
           </div>
           <div>
             <TextField label="League" name="league" />
+          </div>
+          <div>
+            <TextField label="Logo" name="logo" />
           </div>
           <div>
             <MatchSelect label="Matches" name="matches.id" />

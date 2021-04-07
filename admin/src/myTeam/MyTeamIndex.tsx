@@ -4,7 +4,7 @@ import PrivateRoute from "../components/PrivateRoute";
 import useBreadcrumbs from "../components/breadcrumbs/use-breadcrumbs";
 import { MyTeamList } from "./MyTeamList";
 import { CreateMyTeam } from "./CreateMyTeam";
-import { MyTeam } from "./MyTeam";
+import { ViewMyTeam } from "./ViewMyTeam";
 
 export const MyTeamIndex = (): React.ReactElement => {
   useBreadcrumbs("/my-teams/", "My teams");
@@ -13,7 +13,7 @@ export const MyTeamIndex = (): React.ReactElement => {
     <Switch>
       <PrivateRoute exact path={"/my-teams/"} component={MyTeamList} />
       <PrivateRoute path={"/my-teams/new"} component={CreateMyTeam} />
-      <PrivateRoute path={"/my-teams/:id"} component={MyTeam} />
+      <PrivateRoute path={"/my-teams/:id"} component={ViewMyTeam} />
     </Switch>
   );
 };

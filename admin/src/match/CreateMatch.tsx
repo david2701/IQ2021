@@ -14,7 +14,7 @@ import {
 import { api } from "../api";
 import useBreadcrumbs from "../components/breadcrumbs/use-breadcrumbs";
 import { TeamSelect } from "../team/TeamSelect";
-import { Match } from "../api/match/Match";
+import { Match as TMatch } from "../api/match/Match";
 import { MatchCreateInput } from "../api/match/MatchCreateInput";
 
 const INITIAL_VALUES = {} as MatchCreateInput;
@@ -24,7 +24,7 @@ export const CreateMatch = (): React.ReactElement => {
   const history = useHistory();
 
   const [create, { error, isError, isLoading }] = useMutation<
-    Match,
+    TMatch,
     AxiosError,
     MatchCreateInput
   >(

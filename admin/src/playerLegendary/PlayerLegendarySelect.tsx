@@ -3,9 +3,9 @@ import { AxiosError } from "axios";
 import { useQuery } from "react-query";
 import { api } from "../api";
 import { SelectField, SelectFieldProps } from "@amplication/design-system";
-import { PlayerLegendary } from "../api/playerLegendary/PlayerLegendary";
+import { PlayerLegendary as TPlayerLegendary } from "../api/playerLegendary/PlayerLegendary";
 
-type Data = PlayerLegendary[];
+type Data = TPlayerLegendary[];
 
 type Props = Omit<SelectFieldProps, "options">;
 

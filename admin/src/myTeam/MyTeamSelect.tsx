@@ -3,9 +3,9 @@ import { AxiosError } from "axios";
 import { useQuery } from "react-query";
 import { api } from "../api";
 import { SelectField, SelectFieldProps } from "@amplication/design-system";
-import { MyTeam } from "../api/myTeam/MyTeam";
+import { MyTeam as TMyTeam } from "../api/myTeam/MyTeam";
 
-type Data = MyTeam[];
+type Data = TMyTeam[];
 
 type Props = Omit<SelectFieldProps, "options">;
 

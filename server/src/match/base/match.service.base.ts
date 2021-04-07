@@ -1,28 +1,48 @@
 import { PrismaService } from "nestjs-prisma";
-import {
-  FindOneMatchArgs,
-  FindManyMatchArgs,
-  MatchCreateArgs,
-  MatchUpdateArgs,
-  MatchDeleteArgs,
-  Subset,
-} from "@prisma/client";
+import { Prisma, Match, Team } from "@prisma/client";
 
 export class MatchServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
-  findMany<T extends FindManyMatchArgs>(args: Subset<T, FindManyMatchArgs>) {
+
+  async findMany<T extends Prisma.MatchFindManyArgs>(
+    args: Prisma.SelectSubset<T, Prisma.MatchFindManyArgs>
+  ): Promise<Match[]> {
     return this.prisma.match.findMany(args);
   }
-  findOne<T extends FindOneMatchArgs>(args: Subset<T, FindOneMatchArgs>) {
-    return this.prisma.match.findOne(args);
+  async findOne<T extends Prisma.MatchFindUniqueArgs>(
+    args: Prisma.SelectSubset<T, Prisma.MatchFindUniqueArgs>
+  ): Promise<Match | null> {
+    return this.prisma.match.findUnique(args);
   }
-  create<T extends MatchCreateArgs>(args: Subset<T, MatchCreateArgs>) {
+  async create<T extends Prisma.MatchCreateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.MatchCreateArgs>
+  ): Promise<Match> {
     return this.prisma.match.create<T>(args);
   }
-  update<T extends MatchUpdateArgs>(args: Subset<T, MatchUpdateArgs>) {
+  async update<T extends Prisma.MatchUpdateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.MatchUpdateArgs>
+  ): Promise<Match> {
     return this.prisma.match.update<T>(args);
   }
-  delete<T extends MatchDeleteArgs>(args: Subset<T, MatchDeleteArgs>) {
+  async delete<T extends Prisma.MatchDeleteArgs>(
+    args: Prisma.SelectSubset<T, Prisma.MatchDeleteArgs>
+  ): Promise<Match> {
     return this.prisma.match.delete(args);
+  }
+
+  async getLocal(parentId: string): Promise<Team | null> {
+    return this.prisma.match
+      .findUnique({
+        where: { id: parentId },
+      })
+      .local();
+  }
+
+  async getVisitor(parentId: string): Promise<Team | null> {
+    return this.prisma.match
+      .findUnique({
+        where: { id: parentId },
+      })
+      .visitor();
   }
 }

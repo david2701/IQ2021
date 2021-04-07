@@ -10,12 +10,12 @@ import { isRecordNotFoundError } from "../../prisma.util";
 import { CreateCountryArgs } from "./CreateCountryArgs";
 import { UpdateCountryArgs } from "./UpdateCountryArgs";
 import { DeleteCountryArgs } from "./DeleteCountryArgs";
-import { FindManyCountryArgs } from "./FindManyCountryArgs";
-import { FindOneCountryArgs } from "./FindOneCountryArgs";
+import { CountryFindManyArgs } from "./CountryFindManyArgs";
+import { CountryFindUniqueArgs } from "./CountryFindUniqueArgs";
 import { Country } from "./Country";
-import { FindManyStadeArgs } from "../../stade/base/FindManyStadeArgs";
+import { StadeFindManyArgs } from "../../stade/base/StadeFindManyArgs";
 import { Stade } from "../../stade/base/Stade";
-import { FindManyTeamArgs } from "../../team/base/FindManyTeamArgs";
+import { TeamFindManyArgs } from "../../team/base/TeamFindManyArgs";
 import { Team } from "../../team/base/Team";
 import { CountryService } from "../country.service";
 
@@ -34,7 +34,7 @@ export class CountryResolverBase {
     possession: "any",
   })
   async countries(
-    @graphql.Args() args: FindManyCountryArgs,
+    @graphql.Args() args: CountryFindManyArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<Country[]> {
     const permission = this.rolesBuilder.permission({
@@ -54,7 +54,7 @@ export class CountryResolverBase {
     possession: "own",
   })
   async country(
-    @graphql.Args() args: FindOneCountryArgs,
+    @graphql.Args() args: CountryFindUniqueArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<Country | null> {
     const permission = this.rolesBuilder.permission({
@@ -185,7 +185,7 @@ export class CountryResolverBase {
   })
   async stades(
     @graphql.Parent() parent: Country,
-    @graphql.Args() args: FindManyStadeArgs,
+    @graphql.Args() args: StadeFindManyArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<Stade[]> {
     const permission = this.rolesBuilder.permission({
@@ -194,10 +194,7 @@ export class CountryResolverBase {
       possession: "any",
       resource: "Stade",
     });
-    const results = await this.service
-      .findOne({ where: { id: parent.id } })
-      // @ts-ignore
-      .stades(args);
+    const results = await this.service.findStades(parent.id, args);
     return results.map((result) => permission.filter(result));
   }
 
@@ -209,7 +206,7 @@ export class CountryResolverBase {
   })
   async teams(
     @graphql.Parent() parent: Country,
-    @graphql.Args() args: FindManyTeamArgs,
+    @graphql.Args() args: TeamFindManyArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<Team[]> {
     const permission = this.rolesBuilder.permission({
@@ -218,10 +215,7 @@ export class CountryResolverBase {
       possession: "any",
       resource: "Team",
     });
-    const results = await this.service
-      .findOne({ where: { id: parent.id } })
-      // @ts-ignore
-      .teams(args);
+    const results = await this.service.findTeams(parent.id, args);
     return results.map((result) => permission.filter(result));
   }
 }

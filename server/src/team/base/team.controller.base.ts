@@ -12,6 +12,8 @@ import { TeamWhereInput } from "./TeamWhereInput";
 import { TeamWhereUniqueInput } from "./TeamWhereUniqueInput";
 import { TeamUpdateInput } from "./TeamUpdateInput";
 import { Team } from "./Team";
+import { PlayerLegendaryWhereInput } from "../../playerLegendary/base/PlayerLegendaryWhereInput";
+import { PlayerLegendary } from "../../playerLegendary/base/PlayerLegendary";
 import { PlayerWhereInput } from "../../player/base/PlayerWhereInput";
 import { Player } from "../../player/base/Player";
 
@@ -79,6 +81,10 @@ export class TeamControllerBase {
           : undefined,
       },
       select: {
+        colorA: true,
+        colorB: true,
+        colorC: true,
+
         country: {
           select: {
             id: true,
@@ -88,6 +94,7 @@ export class TeamControllerBase {
         createdAt: true,
         id: true,
         league: true,
+        logo: true,
 
         matches: {
           select: {
@@ -129,6 +136,10 @@ export class TeamControllerBase {
     const results = await this.service.findMany({
       where: query,
       select: {
+        colorA: true,
+        colorB: true,
+        colorC: true,
+
         country: {
           select: {
             id: true,
@@ -138,6 +149,7 @@ export class TeamControllerBase {
         createdAt: true,
         id: true,
         league: true,
+        logo: true,
 
         matches: {
           select: {
@@ -183,6 +195,10 @@ export class TeamControllerBase {
       ...query,
       where: params,
       select: {
+        colorA: true,
+        colorB: true,
+        colorC: true,
+
         country: {
           select: {
             id: true,
@@ -192,6 +208,7 @@ export class TeamControllerBase {
         createdAt: true,
         id: true,
         league: true,
+        logo: true,
 
         matches: {
           select: {
@@ -279,6 +296,10 @@ export class TeamControllerBase {
             : undefined,
         },
         select: {
+          colorA: true,
+          colorB: true,
+          colorC: true,
+
           country: {
             select: {
               id: true,
@@ -288,6 +309,7 @@ export class TeamControllerBase {
           createdAt: true,
           id: true,
           league: true,
+          logo: true,
 
           matches: {
             select: {
@@ -334,6 +356,10 @@ export class TeamControllerBase {
         ...query,
         where: params,
         select: {
+          colorA: true,
+          colorB: true,
+          colorC: true,
+
           country: {
             select: {
               id: true,
@@ -343,6 +369,7 @@ export class TeamControllerBase {
           createdAt: true,
           id: true,
           league: true,
+          logo: true,
 
           matches: {
             select: {
@@ -371,6 +398,170 @@ export class TeamControllerBase {
 
   @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
   @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.Get("/:id/playerLegendaries")
+  @nestAccessControl.UseRoles({
+    resource: "Team",
+    action: "read",
+    possession: "any",
+  })
+  async findManyPlayerLegendaries(
+    @common.Param() params: TeamWhereUniqueInput,
+    @common.Query() query: PlayerLegendaryWhereInput,
+    @nestAccessControl.UserRoles() userRoles: string[]
+  ): Promise<PlayerLegendary[]> {
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "read",
+      possession: "any",
+      resource: "PlayerLegendary",
+    });
+    const results = await this.service.findPlayerLegendaries(params.id, {
+      where: query,
+      select: {
+        createdAt: true,
+        id: true,
+        name: true,
+
+        team: {
+          select: {
+            id: true,
+          },
+        },
+
+        updatedAt: true,
+      },
+    });
+    return results.map((result) => permission.filter(result));
+  }
+
+  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
+  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.Post("/:id/playerLegendaries")
+  @nestAccessControl.UseRoles({
+    resource: "Team",
+    action: "update",
+    possession: "any",
+  })
+  async createPlayerLegendaries(
+    @common.Param() params: TeamWhereUniqueInput,
+    @common.Body() body: TeamWhereUniqueInput[],
+    @nestAccessControl.UserRoles() userRoles: string[]
+  ): Promise<void> {
+    const data = {
+      playerLegendaries: {
+        connect: body,
+      },
+    };
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "update",
+      possession: "any",
+      resource: "Team",
+    });
+    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
+    if (invalidAttributes.length) {
+      const roles = userRoles
+        .map((role: string) => JSON.stringify(role))
+        .join(",");
+      throw new common.ForbiddenException(
+        `Updating the relationship: ${
+          invalidAttributes[0]
+        } of ${"Team"} is forbidden for roles: ${roles}`
+      );
+    }
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
+  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.Patch("/:id/playerLegendaries")
+  @nestAccessControl.UseRoles({
+    resource: "Team",
+    action: "update",
+    possession: "any",
+  })
+  async updatePlayerLegendaries(
+    @common.Param() params: TeamWhereUniqueInput,
+    @common.Body() body: TeamWhereUniqueInput[],
+    @nestAccessControl.UserRoles() userRoles: string[]
+  ): Promise<void> {
+    const data = {
+      playerLegendaries: {
+        set: body,
+      },
+    };
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "update",
+      possession: "any",
+      resource: "Team",
+    });
+    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
+    if (invalidAttributes.length) {
+      const roles = userRoles
+        .map((role: string) => JSON.stringify(role))
+        .join(",");
+      throw new common.ForbiddenException(
+        `Updating the relationship: ${
+          invalidAttributes[0]
+        } of ${"Team"} is forbidden for roles: ${roles}`
+      );
+    }
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
+  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.Delete("/:id/playerLegendaries")
+  @nestAccessControl.UseRoles({
+    resource: "Team",
+    action: "update",
+    possession: "any",
+  })
+  async deletePlayerLegendaries(
+    @common.Param() params: TeamWhereUniqueInput,
+    @common.Body() body: TeamWhereUniqueInput[],
+    @nestAccessControl.UserRoles() userRoles: string[]
+  ): Promise<void> {
+    const data = {
+      playerLegendaries: {
+        disconnect: body,
+      },
+    };
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "update",
+      possession: "any",
+      resource: "Team",
+    });
+    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
+    if (invalidAttributes.length) {
+      const roles = userRoles
+        .map((role: string) => JSON.stringify(role))
+        .join(",");
+      throw new common.ForbiddenException(
+        `Updating the relationship: ${
+          invalidAttributes[0]
+        } of ${"Team"} is forbidden for roles: ${roles}`
+      );
+    }
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
+  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
   @common.Get("/:id/players")
   @nestAccessControl.UseRoles({
     resource: "Team",
@@ -388,7 +579,7 @@ export class TeamControllerBase {
       possession: "any",
       resource: "Player",
     });
-    const results = await this.service.findOne({ where: params }).players({
+    const results = await this.service.findPlayers(params.id, {
       where: query,
       select: {
         createdAt: true,

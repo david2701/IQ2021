@@ -14,7 +14,7 @@ import {
 import { api } from "../api";
 import useBreadcrumbs from "../components/breadcrumbs/use-breadcrumbs";
 import { CountrySelect } from "../country/CountrySelect";
-import { Stade } from "../api/stade/Stade";
+import { Stade as TStade } from "../api/stade/Stade";
 import { StadeCreateInput } from "../api/stade/StadeCreateInput";
 
 const INITIAL_VALUES = {} as StadeCreateInput;
@@ -24,7 +24,7 @@ export const CreateStade = (): React.ReactElement => {
   const history = useHistory();
 
   const [create, { error, isError, isLoading }] = useMutation<
-    Stade,
+    TStade,
     AxiosError,
     StadeCreateInput
   >(

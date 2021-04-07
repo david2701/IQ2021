@@ -10,8 +10,8 @@ import { isRecordNotFoundError } from "../../prisma.util";
 import { CreateGoalkeeperArgs } from "./CreateGoalkeeperArgs";
 import { UpdateGoalkeeperArgs } from "./UpdateGoalkeeperArgs";
 import { DeleteGoalkeeperArgs } from "./DeleteGoalkeeperArgs";
-import { FindManyGoalkeeperArgs } from "./FindManyGoalkeeperArgs";
-import { FindOneGoalkeeperArgs } from "./FindOneGoalkeeperArgs";
+import { GoalkeeperFindManyArgs } from "./GoalkeeperFindManyArgs";
+import { GoalkeeperFindUniqueArgs } from "./GoalkeeperFindUniqueArgs";
 import { Goalkeeper } from "./Goalkeeper";
 import { GoalkeeperService } from "../goalkeeper.service";
 
@@ -30,7 +30,7 @@ export class GoalkeeperResolverBase {
     possession: "any",
   })
   async goalkeepers(
-    @graphql.Args() args: FindManyGoalkeeperArgs,
+    @graphql.Args() args: GoalkeeperFindManyArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<Goalkeeper[]> {
     const permission = this.rolesBuilder.permission({
@@ -50,7 +50,7 @@ export class GoalkeeperResolverBase {
     possession: "own",
   })
   async goalkeeper(
-    @graphql.Args() args: FindOneGoalkeeperArgs,
+    @graphql.Args() args: GoalkeeperFindUniqueArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<Goalkeeper | null> {
     const permission = this.rolesBuilder.permission({
@@ -197,7 +197,7 @@ export class GoalkeeperResolverBase {
   })
   async goalkeepers(
     @graphql.Parent() parent: Goalkeeper,
-    @graphql.Args() args: FindManyGoalkeeperArgs,
+    @graphql.Args() args: GoalkeeperFindManyArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<Goalkeeper[]> {
     const permission = this.rolesBuilder.permission({
@@ -206,10 +206,7 @@ export class GoalkeeperResolverBase {
       possession: "any",
       resource: "Goalkeeper",
     });
-    const results = await this.service
-      .findOne({ where: { id: parent.id } })
-      // @ts-ignore
-      .goalkeepers(args);
+    const results = await this.service.findGoalkeepers(parent.id, args);
     return results.map((result) => permission.filter(result));
   }
 
@@ -229,9 +226,7 @@ export class GoalkeeperResolverBase {
       possession: "any",
       resource: "Goalkeeper",
     });
-    const result = await this.service
-      .findOne({ where: { id: parent.id } })
-      .goalkeeper();
+    const result = await this.service.getGoalkeeper(parent.id);
 
     if (!result) {
       return null;

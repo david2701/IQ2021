@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import { AxiosError } from "axios";
 import { useQuery } from "react-query";
 import { api } from "../api";
-import { Player } from "../api/player/Player";
+import { Player as TPlayer } from "../api/player/Player";
 
 type Props = { id: string };
 
 export const PlayerTitle = ({ id }: Props) => {
   const { data, isLoading, isError, error } = useQuery<
-    Player,
+    TPlayer,
     AxiosError,
     [string, string]
   >(["get-/api/players", id], async (key: string, id: string) => {

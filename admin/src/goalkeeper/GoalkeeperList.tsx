@@ -17,9 +17,9 @@ import {
 } from "@amplication/design-system";
 
 import { GoalkeeperTitle } from "./GoalkeeperTitle";
-import { Goalkeeper } from "../api/goalkeeper/Goalkeeper";
+import { Goalkeeper as TGoalkeeper } from "../api/goalkeeper/Goalkeeper";
 
-type Data = Goalkeeper[];
+type Data = TGoalkeeper[];
 
 const SORT_DATA: SortData = {
   field: null,
@@ -78,7 +78,7 @@ export const GoalkeeperList = (): React.ReactElement => {
         }
       >
         {data &&
-          data.map((item: Goalkeeper) => {
+          data.map((item: TGoalkeeper) => {
             return (
               <DataGridRow key={item.id} clickData={item}>
                 <DataGridCell>

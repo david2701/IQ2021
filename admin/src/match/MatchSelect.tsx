@@ -3,9 +3,9 @@ import { AxiosError } from "axios";
 import { useQuery } from "react-query";
 import { api } from "../api";
 import { SelectField, SelectFieldProps } from "@amplication/design-system";
-import { Match } from "../api/match/Match";
+import { Match as TMatch } from "../api/match/Match";
 
-type Data = Match[];
+type Data = TMatch[];
 
 type Props = Omit<SelectFieldProps, "options">;
 

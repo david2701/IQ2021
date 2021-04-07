@@ -8,10 +8,10 @@ import * as gqlUserRoles from "../../auth/gqlUserRoles.decorator";
 import * as abacUtil from "../../auth/abac.util";
 import { isRecordNotFoundError } from "../../prisma.util";
 import { DeleteMyTeamArgs } from "./DeleteMyTeamArgs";
-import { FindManyMyTeamArgs } from "./FindManyMyTeamArgs";
-import { FindOneMyTeamArgs } from "./FindOneMyTeamArgs";
+import { MyTeamFindManyArgs } from "./MyTeamFindManyArgs";
+import { MyTeamFindUniqueArgs } from "./MyTeamFindUniqueArgs";
 import { MyTeam } from "./MyTeam";
-import { FindManyPlayerArgs } from "../../player/base/FindManyPlayerArgs";
+import { PlayerFindManyArgs } from "../../player/base/PlayerFindManyArgs";
 import { Player } from "../../player/base/Player";
 import { MyTeamService } from "../myTeam.service";
 
@@ -30,7 +30,7 @@ export class MyTeamResolverBase {
     possession: "any",
   })
   async myTeams(
-    @graphql.Args() args: FindManyMyTeamArgs,
+    @graphql.Args() args: MyTeamFindManyArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<MyTeam[]> {
     const permission = this.rolesBuilder.permission({
@@ -50,7 +50,7 @@ export class MyTeamResolverBase {
     possession: "own",
   })
   async myTeam(
-    @graphql.Args() args: FindOneMyTeamArgs,
+    @graphql.Args() args: MyTeamFindUniqueArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<MyTeam | null> {
     const permission = this.rolesBuilder.permission({
@@ -96,7 +96,7 @@ export class MyTeamResolverBase {
   })
   async players(
     @graphql.Parent() parent: MyTeam,
-    @graphql.Args() args: FindManyPlayerArgs,
+    @graphql.Args() args: PlayerFindManyArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<Player[]> {
     const permission = this.rolesBuilder.permission({
@@ -105,10 +105,7 @@ export class MyTeamResolverBase {
       possession: "any",
       resource: "Player",
     });
-    const results = await this.service
-      .findOne({ where: { id: parent.id } })
-      // @ts-ignore
-      .players(args);
+    const results = await this.service.findPlayers(parent.id, args);
     return results.map((result) => permission.filter(result));
   }
 }

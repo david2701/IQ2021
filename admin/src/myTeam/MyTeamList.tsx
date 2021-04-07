@@ -16,9 +16,9 @@ import {
   TimeSince,
 } from "@amplication/design-system";
 
-import { MyTeam } from "../api/myTeam/MyTeam";
+import { MyTeam as TMyTeam } from "../api/myTeam/MyTeam";
 
-type Data = MyTeam[];
+type Data = TMyTeam[];
 
 const SORT_DATA: SortData = {
   field: null,
@@ -67,7 +67,7 @@ export const MyTeamList = (): React.ReactElement => {
         }
       >
         {data &&
-          data.map((item: MyTeam) => {
+          data.map((item: TMyTeam) => {
             return (
               <DataGridRow key={item.id} clickData={item}>
                 <DataGridCell>

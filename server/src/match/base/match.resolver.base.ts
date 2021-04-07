@@ -10,8 +10,8 @@ import { isRecordNotFoundError } from "../../prisma.util";
 import { CreateMatchArgs } from "./CreateMatchArgs";
 import { UpdateMatchArgs } from "./UpdateMatchArgs";
 import { DeleteMatchArgs } from "./DeleteMatchArgs";
-import { FindManyMatchArgs } from "./FindManyMatchArgs";
-import { FindOneMatchArgs } from "./FindOneMatchArgs";
+import { MatchFindManyArgs } from "./MatchFindManyArgs";
+import { MatchFindUniqueArgs } from "./MatchFindUniqueArgs";
 import { Match } from "./Match";
 import { Team } from "../../team/base/Team";
 import { MatchService } from "../match.service";
@@ -31,7 +31,7 @@ export class MatchResolverBase {
     possession: "any",
   })
   async matches(
-    @graphql.Args() args: FindManyMatchArgs,
+    @graphql.Args() args: MatchFindManyArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<Match[]> {
     const permission = this.rolesBuilder.permission({
@@ -51,7 +51,7 @@ export class MatchResolverBase {
     possession: "own",
   })
   async match(
-    @graphql.Args() args: FindOneMatchArgs,
+    @graphql.Args() args: MatchFindUniqueArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<Match | null> {
     const permission = this.rolesBuilder.permission({
@@ -218,9 +218,7 @@ export class MatchResolverBase {
       possession: "any",
       resource: "Team",
     });
-    const result = await this.service
-      .findOne({ where: { id: parent.id } })
-      .local();
+    const result = await this.service.getLocal(parent.id);
 
     if (!result) {
       return null;
@@ -244,9 +242,7 @@ export class MatchResolverBase {
       possession: "any",
       resource: "Team",
     });
-    const result = await this.service
-      .findOne({ where: { id: parent.id } })
-      .visitor();
+    const result = await this.service.getVisitor(parent.id);
 
     if (!result) {
       return null;

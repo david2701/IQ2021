@@ -10,8 +10,8 @@ import { isRecordNotFoundError } from "../../prisma.util";
 import { CreateUserArgs } from "./CreateUserArgs";
 import { UpdateUserArgs } from "./UpdateUserArgs";
 import { DeleteUserArgs } from "./DeleteUserArgs";
-import { FindManyUserArgs } from "./FindManyUserArgs";
-import { FindOneUserArgs } from "./FindOneUserArgs";
+import { UserFindManyArgs } from "./UserFindManyArgs";
+import { UserFindUniqueArgs } from "./UserFindUniqueArgs";
 import { User } from "./User";
 import { UserService } from "../user.service";
 
@@ -30,7 +30,7 @@ export class UserResolverBase {
     possession: "any",
   })
   async users(
-    @graphql.Args() args: FindManyUserArgs,
+    @graphql.Args() args: UserFindManyArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<User[]> {
     const permission = this.rolesBuilder.permission({
@@ -50,7 +50,7 @@ export class UserResolverBase {
     possession: "own",
   })
   async user(
-    @graphql.Args() args: FindOneUserArgs,
+    @graphql.Args() args: UserFindUniqueArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
   ): Promise<User | null> {
     const permission = this.rolesBuilder.permission({

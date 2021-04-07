@@ -13,7 +13,7 @@ import {
 } from "@amplication/design-system";
 import { api } from "../api";
 import useBreadcrumbs from "../components/breadcrumbs/use-breadcrumbs";
-import { Country } from "../api/country/Country";
+import { Country as TCountry } from "../api/country/Country";
 import { CountryCreateInput } from "../api/country/CountryCreateInput";
 
 const INITIAL_VALUES = {} as CountryCreateInput;
@@ -23,7 +23,7 @@ export const CreateCountry = (): React.ReactElement => {
   const history = useHistory();
 
   const [create, { error, isError, isLoading }] = useMutation<
-    Country,
+    TCountry,
     AxiosError,
     CountryCreateInput
   >(
